@@ -11,6 +11,8 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
+    qSetMessagePattern("[%{time yyyy-MM-dd h:mm:ss}] [%{type}] [%{file}:%{line}]  %{message}");
+
     // 导入qss样式
     QFile qss(":/style/stylesheet.qss");
     if(qss.open(QFile::ReadOnly)){

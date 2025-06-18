@@ -38,7 +38,21 @@ SOURCES += \
     timerbtn.cpp \
     clickedlabel.cpp \
     resetdialog.cpp \
-    tcpmgr.cpp
+    tcpmgr.cpp \
+    chatdialog.cpp \
+    clickedbtn.cpp \
+    customizeedit.cpp \
+    chatuserlist.cpp \
+    chatuserwid.cpp \
+    listitembase.cpp \
+    chatpage.cpp \
+    loadingdlg.cpp \
+    chatview.cpp \
+    chatitembase.cpp \
+    bubbleframe.cpp \
+    textbubble.cpp \
+    picturebubble.cpp \
+    messagetextedit.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -50,13 +64,31 @@ HEADERS += \
     timerbtn.h \
     clickedlabel.h \
     resetdialog.h \
-    tcpmgr.h
+    tcpmgr.h \
+    chatdialog.h \
+    clickedbtn.h \
+    customizeedit.h \
+    chatuserlist.h \
+    chatuserwid.h \
+    listitembase.h \
+    chatpage.h \
+    loadingdlg.h \
+    chatview.h \
+    chatitembase.h \
+    bubbleframe.h \
+    textbubble.h \
+    picturebubble.h \
+    messagetextedit.h
 
 FORMS += \
         mainwindow.ui \
     logindialog.ui \
     registerdialog.ui \
-    resetdialog.ui
+    resetdialog.ui \
+    chatdialog.ui \
+    chatuserwid.ui \
+    chatpage.ui \
+    loadingdlg.ui
 
 RESOURCES += \
     rc.qrc
