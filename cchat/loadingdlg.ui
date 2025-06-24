@@ -27,7 +27,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QLabel" name="label">
+    <widget class="QLabel" name="loading_lb">
      <property name="text">
       <string>等待</string>
      </property>

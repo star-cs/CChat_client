@@ -86,6 +86,22 @@ void ChatView::insertChatItem(QWidget *before, QWidget *item)
 
 }
 
+void ChatView::removeAllItem()
+{
+    QVBoxLayout *layout = qobject_cast<QVBoxLayout *>(m_pScrollArea->widget()->layout());
+    int count = layout->count();
+    for(int i = 0 ; i < count ; ++i){
+        // 备注： takeAt 用于动态移除并返回布局中指定索引位置的布局项
+        QLayoutItem *item = layout->takeAt(0);
+        if(item){
+            if(QWidget* wid = item->widget()){
+                delete wid;
+            }
+            delete item;
+        }
+    }
+}
+
 bool ChatView::eventFilter(QObject *o, QEvent *e)
 {
     if(e->type() == QEvent::Enter && o == m_pScrollArea)

@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include <QPainter>
-
+#include "userdata.h"
 namespace Ui {
 class ChatPage;
 }
@@ -21,7 +21,11 @@ class ChatPage : public QWidget
 public:
     explicit ChatPage(QWidget *parent = 0);
     ~ChatPage();
-
+    // 设置当前 聊天界面对象的 UserInfo
+    void SetUserInfo(std::shared_ptr<UserInfo> userinfo);
+    // 添加 聊天气泡
+    void AppendChatMsg(std::shared_ptr<TextChatData> msg);
+    bool hasUserInfo(){return _user_info != nullptr;}
 protected:
     virtual void paintEvent(QPaintEvent* event) override;
 
@@ -31,6 +35,8 @@ private slots:
 
 private:
     Ui::ChatPage *ui;
+
+    std::shared_ptr<UserInfo> _user_info;
 };
 
 #endif // CHATPAGE_H

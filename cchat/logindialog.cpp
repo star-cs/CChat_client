@@ -113,7 +113,7 @@ void LoginDialog::initHead()
 
 void LoginDialog::initHttpHandlers()
 {
-    _handlers.insert(ReqId::ID_LOGIN_EMAIL, [this](QJsonObject jsonObj){
+    _handlers.insert(ReqId::ID_LOGIN_USER, [this](QJsonObject jsonObj){
         int error = jsonObj["error"].toInt();
         if(error != ErrorCodes::SUCCESS){
             showTip(tr("参数错误"), false);
@@ -262,7 +262,7 @@ void LoginDialog::slot_tcp_con_finish(bool bsuccess)
         jsonObj["token"] = _token;
 
         QJsonDocument doc(jsonObj);
-        QByteArray jsonData = doc.toJson(QJsonDocument::Indented);
+        QByteArray jsonData = doc.toJson(QJsonDocument::Compact);
 
         // 发送 tcp 请求给 chat server
         emit TcpMgr::GetInstance()->sig_send_data(ReqId::ID_CHAT_LOGIN, jsonData);
@@ -299,5 +299,5 @@ void LoginDialog::on_login_btn_clicked()
     json_obj["email"] = email;
     json_obj["passwd"] = passwd;
     HttpMgr::GetInstance()->PostHttpReq(QUrl(gate_url_prefix + ReqServlet::LOGIN_EMAIL())
-        , json_obj, ReqId::ID_LOGIN_EMAIL, Modules::LOGINMOD);
+        , json_obj, ReqId::ID_LOGIN_USER, Modules::LOGINMOD);
 }

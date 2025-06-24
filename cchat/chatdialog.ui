@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1115</width>
-    <height>802</height>
+    <width>998</width>
+    <height>640</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -75,7 +75,7 @@
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <property name="spacing">
-          <number>2</number>
+          <number>0</number>
          </property>
          <property name="leftMargin">
           <number>0</number>
@@ -105,7 +105,7 @@
            </property>
           </spacer>
          </item>
-         <item>
+         <item alignment="Qt::AlignHCenter">
           <widget class="QLabel" name="side_head_lb">
            <property name="minimumSize">
             <size>
@@ -120,7 +120,7 @@
             </size>
            </property>
            <property name="text">
-            <string>头像</string>
+            <string/>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
@@ -143,25 +143,22 @@
            </property>
           </spacer>
          </item>
-         <item>
-          <widget class="QLabel" name="side_contact_lb">
+         <item alignment="Qt::AlignHCenter">
+          <widget class="StateWidget" name="side_chat_lb" native="true">
            <property name="minimumSize">
             <size>
-             <width>50</width>
-             <height>50</height>
+             <width>30</width>
+             <height>30</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>50</width>
-             <height>50</height>
+             <width>30</width>
+             <height>30</height>
             </size>
            </property>
-           <property name="text">
-            <string>聊天</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
+           <property name="layoutDirection">
+            <enum>Qt::LeftToRight</enum>
            </property>
           </widget>
          </item>
@@ -181,25 +178,19 @@
            </property>
           </spacer>
          </item>
-         <item>
-          <widget class="QLabel" name="side_chat_lb">
+         <item alignment="Qt::AlignHCenter">
+          <widget class="StateWidget" name="side_contact_lb" native="true">
            <property name="minimumSize">
             <size>
-             <width>50</width>
-             <height>50</height>
+             <width>30</width>
+             <height>30</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>50</width>
-             <height>50</height>
+             <width>30</width>
+             <height>30</height>
             </size>
-           </property>
-           <property name="text">
-            <string>联系人</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
            </property>
           </widget>
          </item>
@@ -267,13 +258,13 @@
     <widget class="QWidget" name="chat_user_wid" native="true">
      <property name="minimumSize">
       <size>
-       <width>300</width>
+       <width>250</width>
        <height>0</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>300</width>
+       <width>250</width>
        <height>16777215</height>
       </size>
      </property>
@@ -334,6 +325,9 @@
              <height>30</height>
             </size>
            </property>
+           <property name="locale">
+            <locale language="Chinese" country="China"/>
+           </property>
           </widget>
          </item>
          <item>
@@ -362,21 +356,61 @@
        <widget class="ChatUserList" name="chat_user_list"/>
       </item>
       <item>
-       <widget class="QListWidget" name="con_user_list"/>
+       <widget class="ContactUserList" name="con_user_list"/>
       </item>
       <item>
-       <widget class="QListWidget" name="search_list"/>
+       <widget class="SearchList" name="search_list"/>
       </item>
      </layout>
     </widget>
    </item>
    <item>
     <widget class="QStackedWidget" name="stackedWidget">
+     <property name="minimumSize">
+      <size>
+       <width>50</width>
+       <height>50</height>
+      </size>
+     </property>
      <property name="currentIndex">
       <number>0</number>
      </property>
+     <widget class="QWidget" name="default_page">
+      <widget class="QLabel" name="default_icon">
+       <property name="geometry">
+        <rect>
+         <x>340</x>
+         <y>320</y>
+         <width>130</width>
+         <height>130</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>130</width>
+         <height>130</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>130</width>
+         <height>130</height>
+        </size>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="pixmap">
+        <pixmap resource="rc.qrc">:/res/default_icon.png</pixmap>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </widget>
      <widget class="ChatPage" name="chat_page"/>
-     <widget class="QWidget" name="page_2"/>
+     <widget class="FriendInfoPage" name="friend_info_page"/>
+     <widget class="ApplyFriendPage" name="friend_apply_page"/>
     </widget>
    </item>
   </layout>
@@ -403,7 +437,37 @@
    <header>chatpage.h</header>
    <container>1</container>
   </customwidget>
+  <customwidget>
+   <class>StateWidget</class>
+   <extends>QWidget</extends>
+   <header>statewidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>SearchList</class>
+   <extends>QListWidget</extends>
+   <header>searchlist.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ContactUserList</class>
+   <extends>QListWidget</extends>
+   <header>contactuserlist.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ApplyFriendPage</class>
+   <extends>QWidget</extends>
+   <header>applyfriendpage.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>FriendInfoPage</class>
+   <extends>QWidget</extends>
+   <header>friendinfopage.h</header>
+   <container>1</container>
+  </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="rc.qrc"/>
+ </resources>
  <connections/>
 </ui>

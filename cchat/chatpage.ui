@@ -79,7 +79,7 @@
           </spacer>
          </item>
          <item>
-          <widget class="QLabel" name="friend_lab">
+          <widget class="QLabel" name="title_lb">
            <property name="text">
             <string>聊天对象</string>
            </property>
@@ -102,7 +102,7 @@
           </spacer>
          </item>
          <item>
-          <widget class="QLabel" name="status_lab">
+          <widget class="QLabel" name="status_lb">
            <property name="text">
             <string>在线状态</string>
            </property>
@@ -446,14 +446,14 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>ClickedLabel</class>
-   <extends>QLabel</extends>
-   <header>clickedlabel.h</header>
-  </customwidget>
-  <customwidget>
    <class>ClickedBtn</class>
    <extends>QPushButton</extends>
    <header>clickedbtn.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ClickedLabel</class>
+   <extends>QLabel</extends>
+   <header>clickedlabel.h</header>
   </customwidget>
   <customwidget>
    <class>ChatView</class>

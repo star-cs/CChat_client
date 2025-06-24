@@ -5,6 +5,7 @@
 #include <QTcpSocket>
 #include "global.h"
 #include "singleton.h"
+#include "userdata.h"
 
 class TcpMgr : public QObject, public Singleton<TcpMgr>, public std::enable_shared_from_this<TcpMgr>
 {
@@ -41,6 +42,20 @@ signals:
     void sig_swich_chatdlg();
     void sig_login_failed(int);
 
+    void sig_load_apply_list(QJsonArray json_array);        // 加载完成 好友申请记录 列表数据
+
+    void sig_user_search(std::shared_ptr<SearchInfo>);      // 用户搜索的回包，返回得到的 searchInfo
+
+    void sig_friend_apply(std::shared_ptr<AddFriendApply>); // 用户接收到 别人的 好友申请
+
+    void sig_add_auth_friend(std::shared_ptr<AuthInfo>);    //
+
+    void sig_auth_rsp(std::shared_ptr<AuthRsp>);            //
+
+    void sig_text_chat_msg(std::shared_ptr<TextChatMsg> msg);   //
+
+    void sig_notify_offline();
+    void sig_connection_closed();
 };
 
 #endif // TCPMGR_H

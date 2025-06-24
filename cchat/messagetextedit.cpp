@@ -9,7 +9,6 @@ MessageTextEdit::MessageTextEdit(QWidget *parent)
 
     //this->setStyleSheet("border: none;");
     this->setMaximumHeight(60);
-
 //    connect(this,SIGNAL(textChanged()),this,SLOT(textEditChanged()));
 
 }
