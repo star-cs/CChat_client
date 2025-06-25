@@ -5,6 +5,7 @@
 #include <QJsonArray>
 #include <vector>
 #include <QJsonObject>
+#include "global.h"
 
 class SearchInfo {
 public:
@@ -17,30 +18,14 @@ public:
     QString _icon;
 };
 
-class AddFriendApply {
-public:
-    AddFriendApply(int from_uid, QString name, QString desc,
-                   QString icon, QString nick, int sex);
-    int _from_uid;
-    QString _name;
-    QString _desc;
-    QString _icon;
-    QString _nick;
-    int     _sex;
-};
-
 struct ApplyInfo {
     ApplyInfo(int uid, QString name, QString desc,
         QString icon, QString nick, int sex, int status)
         :_uid(uid),_name(name),_desc(desc),
         _icon(icon),_nick(nick),_sex(sex),_status(status){}
 
-    ApplyInfo(std::shared_ptr<AddFriendApply> addinfo)
-        :_uid(addinfo->_from_uid),_name(addinfo->_name),
-          _desc(addinfo->_desc),_icon(addinfo->_icon),
-          _nick(addinfo->_nick),_sex(addinfo->_sex),
-          _status(0)
-    {}
+
+
     void SetIcon(QString head){
         _icon = head;
     }
@@ -80,6 +65,7 @@ struct AuthRsp {
 };
 
 struct TextChatData;
+
 struct FriendInfo {
     FriendInfo(int uid, QString name, QString nick, QString icon,
         int sex, QString desc, QString back, QString last_msg=""):_uid(uid),
@@ -105,6 +91,7 @@ struct FriendInfo {
     QString _back;
     QString _last_msg;
     std::vector<std::shared_ptr<TextChatData>> _chat_msgs;
+    QMap<QString, std::shared_ptr<TextChatData>> _map_msgs;                   // uuid -- TextChatData，状态未达到 MessageStatus::Read 的 消息。
 };
 
 struct UserInfo {
@@ -135,6 +122,7 @@ struct UserInfo {
         _uid(friend_info->_uid),_name(friend_info->_name),_nick(friend_info->_nick),
         _icon(friend_info->_icon),_sex(friend_info->_sex),_last_msg(""){
             _chat_msgs = friend_info->_chat_msgs;
+            _map_msgs = friend_info->_map_msgs;
         }
 
     int _uid;
@@ -145,6 +133,7 @@ struct UserInfo {
     QString _desc;
     QString _last_msg;
     std::vector<std::shared_ptr<TextChatData>> _chat_msgs;   // 历史消息
+    QMap<QString, std::shared_ptr<TextChatData>> _map_msgs;                   // uuid -- TextChatData，状态未达到 MessageStatus::Read 的 消息。
 };
 
 struct TextChatData{
@@ -152,10 +141,20 @@ struct TextChatData{
         :_msg_id(msg_id),_msg_content(msg_content),_from_uid(fromuid),_to_uid(touid){
 
     }
+    void SendSuccess(){
+        _status = MessageStatus::Sent;
+    }
+
+    void ReadSuccess(){
+        _status = MessageStatus::Read;
+    }
+
     QString _msg_id;
     QString _msg_content;
     int _from_uid;
     int _to_uid;
+    // 消息状态
+    MessageStatus _status;
 };
 
 struct TextChatMsg{

@@ -34,7 +34,7 @@ private:
     // 根据选中的用户列表项，更新右侧聊天页面（chat_page）显示的用户信息。
     // 更新聊天界面信息
     void SetSelectChatPage(int uid);
-
+    void UpdateChatMsg(std::vector<std::shared_ptr<TextChatData> > msgdata);
 
 protected:
     bool eventFilter(QObject *watched, QEvent *event);
@@ -49,12 +49,15 @@ public slots:
     void slot_text_changed(const QString &str);
     void slot_show_search(bool search);
     void slot_switch_apply_friend_page();
-    void slot_friend_info_page(std::shared_ptr<UserInfo> user_info);
+    void slot_friend_info_page(int uid);
 
-    void slot_jump_chat_item(std::shared_ptr<SearchInfo> si);
-    void slot_jump_chat_item_from_infopage(std::shared_ptr<UserInfo> user_info);
+    void slot_jump_chat_item(int uid);
+    void slot_jump_chat_item_from_infopage(int uid);
 
-    void slot_apply_friend(std::shared_ptr<AddFriendApply> apply);
+    void slot_apply_friend(std::shared_ptr<ApplyInfo> apply);
+
+    void slot_text_msg_rsp(std::shared_ptr<TextChatMsg> msgdata);
+    void slot_text_chat_msg(std::shared_ptr<TextChatMsg> msg);   // 接收到 他人发来的 聊天消息
 
 
 private:
@@ -66,13 +69,13 @@ private:
     ChatUIMode _state;  // 左侧 side_ber 的 状态
     bool _b_loading;
 
-    QList<StateWidget*> _lb_list;   // 最左侧的 状态栏
+    QList<StateWidget*> _lb_list;   // 最左侧的 状态栏 StateWidget
 
     // 所有的聊天记录 item
     QMap<int, QListWidgetItem*> _chat_items_added;
 
     // 当前所在的 聊天对象
-    int _cur_chat_uid;
+//    int _cur_chat_uid;  直接通过 ui->chat_page 找 uid
 };
 
 #endif // CHATDIALOG_H

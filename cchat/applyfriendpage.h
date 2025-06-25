@@ -18,7 +18,7 @@ class ApplyFriendPage : public QWidget
 public:
     explicit ApplyFriendPage(QWidget *parent = nullptr);
     ~ApplyFriendPage();
-    void AddNewApply(std::shared_ptr<AddFriendApply> apply);
+    void AddNewApply(std::shared_ptr<ApplyInfo> apply);
 protected:
     void paintEvent(QPaintEvent *event);
 private:
@@ -26,7 +26,7 @@ private:
 
 private:
     Ui::ApplyFriendPage *ui;
-    std::unordered_map<int, ApplyFriendItem*> _unauth_items;
+    std::unordered_map<int, ApplyFriendItem*> _unauth_items;        // 未通过的apply
 
 public slots:
     void slot_auth_rsp(std::shared_ptr<AuthRsp> );

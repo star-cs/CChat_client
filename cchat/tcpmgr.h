@@ -46,16 +46,20 @@ signals:
 
     void sig_user_search(std::shared_ptr<SearchInfo>);      // 用户搜索的回包，返回得到的 searchInfo
 
-    void sig_friend_apply(std::shared_ptr<AddFriendApply>); // 用户接收到 别人的 好友申请
+    void sig_friend_apply(std::shared_ptr<ApplyInfo>);      // 用户接收到 别人的 好友申请
 
     void sig_add_auth_friend(std::shared_ptr<AuthInfo>);    //
 
     void sig_auth_rsp(std::shared_ptr<AuthRsp>);            //
 
-    void sig_text_chat_msg(std::shared_ptr<TextChatMsg> msg);   //
+    void sig_text_chat_msg_rsp(std::shared_ptr<TextChatMsg>);   // 成功发送消息的 回包
+
+    void sig_text_chat_msg(std::shared_ptr<TextChatMsg> msg);   // 接收到 他人发来的 聊天消息
 
     void sig_notify_offline();
     void sig_connection_closed();
+
+
 };
 
 #endif // TCPMGR_H

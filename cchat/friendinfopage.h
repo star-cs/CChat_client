@@ -2,6 +2,8 @@
 #define FRIENDINFOPAGE_H
 
 #include <QWidget>
+#include <QString>
+#include "global.h"
 #include "userdata.h"
 
 namespace Ui {
@@ -15,15 +17,18 @@ class FriendInfoPage : public QWidget
 public:
     explicit FriendInfoPage(QWidget *parent = nullptr);
     ~FriendInfoPage();
-    void SetInfo(std::shared_ptr<UserInfo> ui);
+    void SetInfo(std::shared_ptr<FriendInfo> friendinfo);
 private slots:
     void on_msg_chat_clicked();
 
 private:
     Ui::FriendInfoPage *ui;
-    std::shared_ptr<UserInfo> _user_info;
+    int _uid;
+    QString _name;
+    QString _icon;
+    QString _nick;
 signals:
-    void sig_jump_chat_item(std::shared_ptr<UserInfo> si);
+    void sig_jump_chat_item(int uid);
 };
 
 #endif // FRIENDINFOPAGE_H

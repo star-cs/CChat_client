@@ -56,7 +56,7 @@ private slots:
     void slot_user_search(std::shared_ptr<SearchInfo> si);
 signals:
     // 当搜索的用户已经是好友，跳转到 对应的 聊天窗口
-    void sig_jump_chat_item(std::shared_ptr<SearchInfo> si);
+    void sig_jump_chat_item(int uid);
 };
 
 #endif // SEARCHLIST_H

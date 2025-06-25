@@ -131,7 +131,7 @@ bool ApplyFriend::eventFilter(QObject *obj, QEvent *event)
 
 void ApplyFriend::SetSearchInfo(std::shared_ptr<SearchInfo> si)
 {
-    _si = si;
+    _si = std::make_shared<ApplyInfo>(si->_uid, si->_name, si->_desc, si->_icon, si->_nick, si->_sex, 0);
     auto applyname = UserMgr::GetInstance()->GetName();
     auto toName = si->_name;
     ui->selfName_ed->setText(applyname);

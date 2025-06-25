@@ -15,7 +15,7 @@ class PictureBubble : public BubbleFrame
 {
     Q_OBJECT
 public:
-    PictureBubble(const QPixmap &picture, ChatRole role, QWidget *parent = nullptr);
+    PictureBubble(const QPixmap &picture, ChatRole role, MessageStatus status = MessageStatus::Sending, QWidget *parent = nullptr);
 };
 
 #endif // PICTUREBUBBLE_H

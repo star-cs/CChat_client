@@ -21,44 +21,49 @@ QSize ConUserItem::sizeHint() const
     return QSize(250, 70); // 返回自定义的尺寸
 }
 
-void ConUserItem::SetInfo(std::shared_ptr<AuthInfo> auth_info)
+void ConUserItem::SetInfo(const std::shared_ptr<AuthInfo>& auth_info)
 {
-    _info = std::make_shared<UserInfo>(auth_info);
+    _uid = auth_info->_uid;
+    _name = auth_info->_name;
+    _icon = auth_info->_icon;
     // 加载图片
-    QPixmap pixmap(_info->_icon);
+    QPixmap pixmap(_icon);
 
     // 设置图片自动缩放
     ui->icon_lb->setPixmap(pixmap.scaled(ui->icon_lb->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
     ui->icon_lb->setScaledContents(true);
 
-    ui->user_name_lb->setText(_info->_name);
+    ui->user_name_lb->setText(_name);
 }
 
 void ConUserItem::SetInfo(int uid, QString name, QString icon)
 {
-     _info = std::make_shared<UserInfo>(uid,name, name, icon, 0);
+     _uid = uid;
+     _name = name;
+     _icon = icon;
 
      // 加载图片
-     QPixmap pixmap(_info->_icon);
+     QPixmap pixmap(_icon);
 
      // 设置图片自动缩放
      ui->icon_lb->setPixmap(pixmap.scaled(ui->icon_lb->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
      ui->icon_lb->setScaledContents(true);
 
-     ui->user_name_lb->setText(_info->_name);
+     ui->user_name_lb->setText(_name);
 }
 
-void ConUserItem::SetInfo(std::shared_ptr<AuthRsp> auth_rsp){
-    _info = std::make_shared<UserInfo>(auth_rsp);
-
+void ConUserItem::SetInfo(const std::shared_ptr<AuthRsp>& auth_rsp){
+    _uid = auth_rsp->_uid;
+    _name = auth_rsp->_name;
+    _icon = auth_rsp->_icon;
     // 加载图片
-    QPixmap pixmap(_info->_icon);
+    QPixmap pixmap(_icon);
 
     // 设置图片自动缩放
     ui->icon_lb->setPixmap(pixmap.scaled(ui->icon_lb->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
     ui->icon_lb->setScaledContents(true);
 
-    ui->user_name_lb->setText(_info->_name);
+    ui->user_name_lb->setText(_name);
 }
 
 void ConUserItem::ShowRedPoint(bool show)
@@ -68,9 +73,4 @@ void ConUserItem::ShowRedPoint(bool show)
     }else{
         ui->red_point->hide();
     }
-}
-
-std::shared_ptr<UserInfo> ConUserItem::GetInfo()
-{
-    return _info;
 }

@@ -4,8 +4,8 @@
 #define PIC_MAX_WIDTH 320
 #define PIC_MAX_HEIGHT 200
 
-PictureBubble::PictureBubble(const QPixmap &picture, ChatRole role, QWidget *parent)
-    :BubbleFrame(role, parent)
+PictureBubble::PictureBubble(const QPixmap &picture, ChatRole role, MessageStatus status,  QWidget *parent)
+    :BubbleFrame(role, status, parent)
 {
     QLabel *lb = new QLabel();
     lb->setScaledContents(false); // 关闭自动拉伸，改为手动控制缩放比例

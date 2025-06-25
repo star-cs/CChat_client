@@ -27,15 +27,18 @@ public:
     explicit ConUserItem(QWidget *parent = nullptr);
     ~ConUserItem();
     QSize sizeHint() const override;
-    void SetInfo(std::shared_ptr<AuthInfo> auth_info);
-    void SetInfo(std::shared_ptr<AuthRsp> auth_rsp);
+    void SetInfo(const std::shared_ptr<AuthInfo>& auth_info);
+    void SetInfo(const std::shared_ptr<AuthRsp>& auth_rsp);
     void SetInfo(int uid, QString name, QString icon);
     void ShowRedPoint(bool show = false);
-    std::shared_ptr<UserInfo> GetInfo();
+    int getUid(){return _uid;}
 
 private:
     Ui::ConUserItem *ui;
-    std::shared_ptr<UserInfo> _info;
+    int _uid;
+    QString _name;
+    QString _icon;
+    QString _lastMessage;
 };
 
 #endif // CONUSERITEM_H

@@ -90,7 +90,7 @@ void ChatView::removeAllItem()
 {
     QVBoxLayout *layout = qobject_cast<QVBoxLayout *>(m_pScrollArea->widget()->layout());
     int count = layout->count();
-    for(int i = 0 ; i < count ; ++i){
+    for(int i = 0 ; i < count-1 ; ++i){ // 备注： count-1，因为这里是头插法，最后有一个widget作为填充 ~
         // 备注： takeAt 用于动态移除并返回布局中指定索引位置的布局项
         QLayoutItem *item = layout->takeAt(0);
         if(item){

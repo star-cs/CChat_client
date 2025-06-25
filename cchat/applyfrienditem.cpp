@@ -39,6 +39,7 @@ void ApplyFriendItem::ShowAddBtn(bool bshow)
         ui->addBtn->hide();
         ui->already_add_lb->show();
         _added = true;
+        _apply_info->_status = 1;
     }
 }
 int ApplyFriendItem::GetUid() {

@@ -141,7 +141,7 @@ void SearchList::slot_user_search(std::shared_ptr<SearchInfo> si)
         if(UserMgr::GetInstance()->CheckFriendById(si->_uid)){
             //此处处理已经添加的好友，实现页面跳转
             //跳转到聊天界面指定的item中
-            emit sig_jump_chat_item(si);
+            emit sig_jump_chat_item(si->_uid);
             return;
         }
 

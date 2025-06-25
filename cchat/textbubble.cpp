@@ -9,8 +9,8 @@
 #include <QTextLayout>
 #include <QFont>
 
-TextBubble::TextBubble(ChatRole role, const QString &text, QWidget *parent)
-    :BubbleFrame(role, parent)
+TextBubble::TextBubble(ChatRole role, const QString &text, MessageStatus status, QWidget *parent)
+    :BubbleFrame(role, status, parent)
 {
     m_pTextEdit = new QTextEdit();
     m_pTextEdit->setReadOnly(true);
@@ -31,6 +31,7 @@ bool TextBubble::eventFilter(QObject *o, QEvent *e)
     {
         adjustTextHeight(); //PaintEvent中设置
     }
+    // 这里 调用 基类的 绘图
     return BubbleFrame::eventFilter(o, e);
 }
 
@@ -52,7 +53,7 @@ void TextBubble::setPlainText(const QString &text)
         max_width = max_width < txtW ? txtW : max_width;                 //找到最长的那段
     }
     //设置这个气泡的最大宽度 只需要设置一次
-    setMaximumWidth(max_width + doc_margin * 2 + (margin_left + margin_right));        //设置最大宽度
+    setMaximumWidth(max_width + doc_margin * 2 + (margin_left + margin_right) + 20);        //设置最大宽度
 }
 
 void TextBubble::adjustTextHeight()
@@ -68,8 +69,11 @@ void TextBubble::adjustTextHeight()
         text_height += text_rect.height();
     }
     int vMargin = this->layout()->contentsMargins().top();
+    int statusHeight = 20; // 状态图标区域高度
+
     //设置这个气泡需要的高度 文本高+文本边距+TextEdit边框到气泡边框的距离
-    setFixedHeight(text_height + doc_margin *2 + vMargin*2 );
+    // 备注 setFixedHeight 是 QWidget 的方法，用于将控件的高度设置为固定值。
+    setFixedHeight(text_height + doc_margin *2 + vMargin*2 + statusHeight);
 }
 
 void TextBubble::initStyleSheet()

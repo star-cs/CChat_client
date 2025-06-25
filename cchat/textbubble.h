@@ -7,7 +7,7 @@
 *    @author:  star-cs
 *    @date:    2025-06-18  15:07
 */
-
+#include "global.h"
 #include <QTextEdit>
 #include "BubbleFrame.h"
 #include <QHBoxLayout>
@@ -16,7 +16,7 @@ class TextBubble : public BubbleFrame
 {
     Q_OBJECT
 public:
-    TextBubble(ChatRole role, const QString &text, QWidget *parent = nullptr);
+    TextBubble(ChatRole role, const QString &text, MessageStatus status = MessageStatus::Sending, QWidget *parent = nullptr);
 protected:
     bool eventFilter(QObject *o, QEvent *e);
 private:

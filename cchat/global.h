@@ -103,6 +103,14 @@ enum class ChatRole
     Other
 };
 
+// 消息状态
+enum MessageStatus {
+    Sending,    // 发送中
+    Sent,       // 已发送
+    NoRead,     // 未读
+    Read        // 已读
+};
+
 struct MsgInfo{
     QString msgFlag;//"text,image,file"
     QString content;//表示文件和图像的url,文本信息

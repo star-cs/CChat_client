@@ -21,7 +21,7 @@ MessageTextEdit::~MessageTextEdit()
 /**
  * @brief 解析编辑框内容为结构化消息列表
  * @return QVector<MsgInfo>
- * @details 逻辑：
+ * @details 备注 逻辑：
  *  1. 遍历纯文本内容，用 QChar::ObjectReplacementCharacter (U+FFFC) 标识嵌入对象
  *  2. 分离文本段和嵌入对象（图片/文件）
  *  3. 将嵌入对象与 mMsgList 中预存的元数据匹配[1](@ref)

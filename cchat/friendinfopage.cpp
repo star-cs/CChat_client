@@ -4,7 +4,7 @@
 
 FriendInfoPage::FriendInfoPage(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::FriendInfoPage),_user_info(nullptr)
+    ui(new Ui::FriendInfoPage)
 {
     ui->setupUi(this);
     ui->msg_chat->SetState("normal","hover","press");
@@ -17,23 +17,26 @@ FriendInfoPage::~FriendInfoPage()
     delete ui;
 }
 
-void FriendInfoPage::SetInfo(std::shared_ptr<UserInfo> user_info)
+void FriendInfoPage::SetInfo(std::shared_ptr<FriendInfo> friendinfo)
 {
-    _user_info = user_info;
+    _uid =  friendinfo->_uid;
+    _name = friendinfo->_name;
+    _icon = friendinfo->_icon;
+    _nick = friendinfo->_nick;
     // 加载图片
-    QPixmap pixmap(user_info->_icon);
+    QPixmap pixmap(_icon);
 
     // 设置图片自动缩放
     ui->icon_lb->setPixmap(pixmap.scaled(ui->icon_lb->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
     ui->icon_lb->setScaledContents(true);
 
-    ui->name_lb->setText(user_info->_name);
-    ui->nick_lb->setText(user_info->_nick);
-    ui->bak_lb->setText(user_info->_nick);
+    ui->name_lb->setText(_name);
+    ui->nick_lb->setText(_nick);
+    ui->bak_lb->setText(_nick);
 }
 
 void FriendInfoPage::on_msg_chat_clicked()
 {
     qDebug() << "msg chat btn clicked";
-    emit sig_jump_chat_item(_user_info);
+    emit sig_jump_chat_item(_uid);
 }

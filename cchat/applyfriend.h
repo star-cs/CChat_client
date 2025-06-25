@@ -25,6 +25,7 @@ public:
     void InitTipLbs();
     void AddTipLbs(ClickedLabel*, QPoint cur_point, QPoint &next_point, int text_width, int text_height);
     bool eventFilter(QObject *obj, QEvent *event);
+    // 从 搜索 添加好友里 添加 的 ApplyFirend
     void SetSearchInfo(std::shared_ptr<SearchInfo> si);
 private:
     void resetLabels();
@@ -40,7 +41,7 @@ private:
     std::vector<QString> _tip_data;
     QPoint _tip_cur_point;
     // 当前 用户消息的 基本消息
-    std::shared_ptr<SearchInfo> _si;
+    std::shared_ptr<ApplyInfo> _si;
 public slots:
     //显示更多label标签
     void ShowMoreLabel();

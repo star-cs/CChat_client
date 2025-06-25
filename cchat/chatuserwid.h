@@ -4,6 +4,7 @@
 #include <QWidget>
 #include "listitembase.h"
 #include "userdata.h"
+#include <QTime>
 /**
 *    @file:    chatuserwid.h
 *    @brief:   QListWidget 的每一个 item 的 聊天widget
@@ -26,15 +27,20 @@ public:
     QSize sizeHint() const override{
         return QSize(250, 70);  // 返回自定义的尺寸
     }
-    void SetInfo(std::shared_ptr<UserInfo> user_info);
-    void SetInfo(std::shared_ptr<FriendInfo> friend_info);
+    void SetInfo(const std::shared_ptr<UserInfo>& user_info);
+    void SetInfo(const std::shared_ptr<FriendInfo>& friend_info);
+    int getUid(){return _uid;}
     void ShowRedPoint(bool bshow);
-    std::shared_ptr<UserInfo> GetUserInfo(){return _user_info;}
-    void updateLastMsg(std::vector<std::shared_ptr<TextChatData>> msgs);
+    void updateLastMsg(const std::vector<std::shared_ptr<TextChatData>>& msgs);
+public:
+    bool isAppended = false;
+
 private:
     Ui::ChatUserWid *ui;
-    std::shared_ptr<UserInfo> _user_info;
-
+    int _uid;
+    QString _name;
+    QString _icon;
+    QString  _last_msg;
 };
 
 #endif // CHATUSERWID_H

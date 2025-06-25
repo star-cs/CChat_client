@@ -8,23 +8,39 @@
 *    @date:    2025-06-18  15:03
 */
 
-#include <QFrame>
 #include "global.h"
+
+#include <QFrame>
+#include <QLabel>
 #include <QHBoxLayout>
-class BubbleFrame : public QFrame
-{
+#include <QVBoxLayout>
+#include <QEvent>
+
+
+class BubbleFrame : public QFrame {
     Q_OBJECT
 public:
-    BubbleFrame(ChatRole role, QWidget *parent = nullptr);
-    void setMargin(int margin);
-    //inline int margin(){return margin;}
+    BubbleFrame(ChatRole role, MessageStatus status = Sending, QWidget *parent = nullptr);
     void setWidget(QWidget *w);
+    void setStatus(MessageStatus status);
+    void setMargin(int margin);
+
 protected:
-    void paintEvent(QPaintEvent *e);
+    void paintEvent(QPaintEvent *e) override;
+    bool eventFilter(QObject *o, QEvent *e) override;
+
 private:
-    QHBoxLayout *m_pHLayout;
+    void updateStatusIcons();
+
     ChatRole m_role;
-    int      m_margin;
+    int m_margin;
+    QVBoxLayout *m_mainLayout;
+    QHBoxLayout *m_contentLayout;
+    QHBoxLayout *m_statusLayout;
+    QLabel *m_sendStatusIcon;
+    QLabel *m_readStatusIcon;
+    MessageStatus m_currentStatus = Sending;
+    const int WIDTH_SANJIAO = 8;
 };
 
 #endif // BUBBLEFRAME_H
