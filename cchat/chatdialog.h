@@ -77,6 +77,8 @@ private:
 
     // 当前所在的 聊天对象
 //    int _cur_chat_uid;  直接通过 ui->chat_page 找 uid
+    // 心跳包发送定时器
+    QTimer* _timer;
 };
 
 #endif // CHATDIALOG_H

@@ -11,6 +11,14 @@ namespace Ui {
 class MainWindow;
 }
 
+enum UIStatus{
+    LOGIN_UI,
+    REGISTER_UI,
+    RESET_UI,
+    CHAT_UI
+};
+
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -26,6 +34,7 @@ public slots:
     void SlotSwitchReset();
     void SlotSwitchChat();
     void slot_notify_offline();
+    void slot_excepcon_offline();
 
 private:
     void offline_switch_login();
@@ -36,6 +45,7 @@ private:
     RegisterDialog *_register_dlg;
     ResetDialog *_reset_dlg;
     ChatDialog *_chat_dlg;
+    UIStatus _ui_status;
 };
 
 #endif // MAINWINDOW_H

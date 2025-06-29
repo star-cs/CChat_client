@@ -432,6 +432,37 @@ void TcpMgr::initHandlers()
 
         }
    });
+
+   // 心跳回包
+   _handlers.insert(ID_HEART_BEAT_RSP, [this](ReqId id, int len, QByteArray data){
+                qDebug() << "Receive Heart Beat Msg Success" ;
+        Q_UNUSED(len);
+        qDebug() << "handle id is " << id << " data is " << data;
+        // 将QByteArray转换为QJsonDocument
+        QJsonDocument jsonDoc = QJsonDocument::fromJson(data);
+
+        // 检查转换是否成功
+        if (jsonDoc.isNull()) {
+            qDebug() << "Failed to create QJsonDocument.";
+            return;
+        }
+
+        QJsonObject jsonObj = jsonDoc.object();
+
+        if (!jsonObj.contains("error")) {
+            int err = ErrorCodes::ERR_JSON;
+            qDebug() << "Heart Beat Msg Failed, err is Json Parse Err" << err;
+            return;
+        }
+
+        int err = jsonObj["error"].toInt();
+        if (err != ErrorCodes::SUCCESS) {
+            qDebug() << "Heart Beat Msg Failed, err is " << err;
+            return;
+        }
+
+        qDebug() << "Receive Heart Beat Msg Success" ;
+   });
 }
 
 

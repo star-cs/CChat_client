@@ -7,6 +7,7 @@
 #include "usermgr.h"
 #include "conuseritem.h"
 #include "tcpmgr.h"
+#include <QJsonDocument>
 
 #include <QTimer>
 ChatDialog::ChatDialog(QWidget *parent) :
@@ -113,10 +114,25 @@ ChatDialog::ChatDialog(QWidget *parent) :
     // 连接对端消息通知
     connect(TcpMgr::GetInstance().get(), &TcpMgr::sig_text_chat_msg, this, &ChatDialog::slot_text_chat_msg);
 
+
+    // 心跳包发送
+    _timer = new QTimer(this);
+    connect(_timer, &QTimer::timeout, this, [this](){
+        auto uid = UserMgr::GetInstance()->GetUid();
+        QJsonObject obj;
+        obj["fromuid"] = uid;
+        QJsonDocument doc(obj);
+        QByteArray array = doc.toJson(QJsonDocument::Compact);
+        emit TcpMgr::GetInstance()->sig_send_data(ReqId::ID_HEART_BEAT_REQ, array);
+    });
+
+    // 每10秒发一次
+    _timer->start(10000);
 }
 
 ChatDialog::~ChatDialog()
 {
+    _timer->stop();
     delete ui;
 }
 

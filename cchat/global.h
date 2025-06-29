@@ -32,6 +32,9 @@ enum ReqId{
     ID_TEXT_CHAT_MSG_RSP  = 1018,  //文本聊天信息回复
     ID_NOTIFY_TEXT_CHAT_MSG_REQ = 1019, //通知用户文本聊天信息
     ID_NOTIFY_OFF_LINE_REQ = 1020,      //通知用户下线
+
+    ID_HEART_BEAT_REQ = 1012, // 心跳请求
+    ID_HEART_BEAT_RSP = 1012, // 心跳回包
 };
 
 extern QString gate_url_prefix;     // GateServer前缀

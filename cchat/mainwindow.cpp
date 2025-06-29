@@ -24,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     setWindowTitle("飞书");
     setCentralWidget(_login_dlg);       // 设置中心部件，填充主窗口
+    _ui_status = LOGIN_UI;
     connect(_login_dlg, &LoginDialog::sigSwitchRegister, this, &MainWindow::SlotSwitchReg);
 
     // 忘记密码
@@ -38,6 +39,10 @@ MainWindow::MainWindow(QWidget *parent) :
     // 连接，接收到下线通知
     connect(TcpMgr::GetInstance().get(), &TcpMgr::sig_notify_offline, this, &MainWindow::slot_notify_offline);
 
+
+    // 连接，接收到 断开连接 通知
+    connect(TcpMgr::GetInstance().get(), &TcpMgr::sig_connection_closed, this, &MainWindow::slot_excepcon_offline);
+
 }
 
 MainWindow::~MainWindow()
@@ -47,6 +52,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::SlotSwitchReg()
 {
+    _ui_status = REGISTER_UI;
     _register_dlg = new RegisterDialog(this);
     _register_dlg->hide();
 
@@ -63,6 +69,7 @@ void MainWindow::SlotSwitchReg()
 
 void MainWindow::SlotSwitchLog()
 {
+    _ui_status = LOGIN_UI;
     _login_dlg = new LoginDialog(this); // 这里得 new
     _login_dlg->setWindowFlags(Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
     setCentralWidget(_login_dlg);
@@ -76,6 +83,7 @@ void MainWindow::SlotSwitchLog()
 
 void MainWindow::SlotSwitchLog2()
 {
+    _ui_status = LOGIN_UI;
     _login_dlg = new LoginDialog(this); // 这里得 new
     _login_dlg->setWindowFlags(Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
     setCentralWidget(_login_dlg);
@@ -89,6 +97,7 @@ void MainWindow::SlotSwitchLog2()
 
 void MainWindow::SlotSwitchReset()
 {
+    _ui_status = RESET_UI;
     _reset_dlg = new ResetDialog(this);
     _reset_dlg->setWindowFlags(Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
     setCentralWidget(_reset_dlg);
@@ -101,6 +110,7 @@ void MainWindow::SlotSwitchReset()
 
 void MainWindow::SlotSwitchChat()
 {
+    _ui_status = CHAT_UI;
     _chat_dlg = new ChatDialog(this);
     _chat_dlg->setWindowFlags(Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
     setCentralWidget(_chat_dlg);
@@ -122,8 +132,23 @@ void MainWindow::slot_notify_offline()
     offline_switch_login();
 }
 
+void MainWindow::slot_excepcon_offline()
+{
+    QMessageBox::critical(
+        this,                   // 父窗口指针（保证模态性）
+        "下线提示",             // 弹窗标题
+        "网络异常，请重新登录", // 错误详情
+        QMessageBox::Ok         // 显示"确定"按钮
+    );
+    TcpMgr::GetInstance()->CloseConnection();
+    offline_switch_login();
+}
+
 void MainWindow::offline_switch_login()
 {
+    if(_ui_status == LOGIN_UI){
+        return;
+    }
     _login_dlg = new LoginDialog(this); // 这里得 new
     _login_dlg->setWindowFlags(Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
     setCentralWidget(_login_dlg);
@@ -139,7 +164,7 @@ void MainWindow::offline_switch_login()
 
     connect(_login_dlg, &LoginDialog::sigSwitchRegister, this, &MainWindow::SlotSwitchReg);
     connect(_login_dlg, &LoginDialog::sigSwitchReset, this, &MainWindow::SlotSwitchReset);
-
+    _ui_status = LOGIN_UI;
 }
 
 
