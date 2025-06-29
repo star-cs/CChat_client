@@ -25,6 +25,10 @@ public slots:
     void SlotSwitchLog2();      // 从 __reset_dlg ---> _login_dlg
     void SlotSwitchReset();
     void SlotSwitchChat();
+    void slot_notify_offline();
+
+private:
+    void offline_switch_login();
 
 private:
     Ui::MainWindow *ui;

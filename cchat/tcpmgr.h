@@ -13,6 +13,8 @@ class TcpMgr : public QObject, public Singleton<TcpMgr>, public std::enable_shar
 
 public:
     ~TcpMgr();
+    void CloseConnection();
+
 private:
     friend class Singleton<TcpMgr>;
     TcpMgr();

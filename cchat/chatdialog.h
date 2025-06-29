@@ -36,6 +36,8 @@ private:
     void SetSelectChatPage(int uid);
     void UpdateChatMsg(std::vector<std::shared_ptr<TextChatData> > msgdata);
 
+    void offline_switch_login();
+
 protected:
     bool eventFilter(QObject *watched, QEvent *event);
 
@@ -58,7 +60,6 @@ public slots:
 
     void slot_text_msg_rsp(std::shared_ptr<TextChatMsg> msgdata);
     void slot_text_chat_msg(std::shared_ptr<TextChatMsg> msg);   // 接收到 他人发来的 聊天消息
-
 
 private:
     Ui::ChatDialog *ui;

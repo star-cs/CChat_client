@@ -113,8 +113,6 @@ ChatDialog::ChatDialog(QWidget *parent) :
     // 连接对端消息通知
     connect(TcpMgr::GetInstance().get(), &TcpMgr::sig_text_chat_msg, this, &ChatDialog::slot_text_chat_msg);
 
-    // 连接，接收到
-
 }
 
 ChatDialog::~ChatDialog()
@@ -289,6 +287,7 @@ void ChatDialog::UpdateChatMsg(std::vector<std::shared_ptr<TextChatData> > msgda
         ui->chat_page->AppendChatMsg(msg);
     }
 }
+
 
 bool ChatDialog::eventFilter(QObject *watched, QEvent *event)
 {
@@ -581,5 +580,6 @@ void ChatDialog::slot_text_chat_msg(std::shared_ptr<TextChatMsg> msg)
     ui->chat_user_list->setItemWidget(item, chat_user_wid);
     _chat_items_added.insert(msg->_from_uid, item); // 记录
 }
+
 
 

@@ -8,6 +8,11 @@ TcpMgr::~TcpMgr()
 
 }
 
+void TcpMgr::CloseConnection()
+{
+    _socket.close();
+}
+
 TcpMgr::TcpMgr(): _host(""), _port(0), _b_recv_pending(false), _message_id(0), _message_len(0)
 {
     QObject::connect(&_socket, &QTcpSocket::connected, [&](){
@@ -393,6 +398,39 @@ void TcpMgr::initHandlers()
         auto msg_ptr = std::make_shared<TextChatMsg>(jsonObj["fromuid"].toInt(),
                 jsonObj["touid"].toInt(),jsonObj["text_array"].toArray());
         emit sig_text_chat_msg(msg_ptr);
+   });
+
+   _handlers.insert(ID_NOTIFY_OFF_LINE_REQ, [this](ReqId id, int len, QByteArray data) {
+        Q_UNUSED(len);
+        qDebug() << "handle id is " << id << " data is " << data;
+        // 将QByteArray转换为QJsonDocument
+        QJsonDocument jsonDoc = QJsonDocument::fromJson(data);
+
+        // 检查转换是否成功
+        if (jsonDoc.isNull()) {
+            qDebug() << "Failed to create QJsonDocument.";
+            return;
+        }
+
+        QJsonObject jsonObj = jsonDoc.object();
+
+        if (!jsonObj.contains("error")) {
+            int err = ErrorCodes::ERR_JSON;
+            qDebug() << "ID_NOTIFY_OFF_LINE_REQ Failed, err is Json Parse Err" << err;
+            return;
+        }
+
+        int err = jsonObj["error"].toInt();
+        if (err != ErrorCodes::SUCCESS) {
+            qDebug() << "ID_NOTIFY_OFF_LINE_REQ Failed, err is " << err;
+            return;
+        }
+
+        if(jsonObj["uid"].toInt() == UserMgr::GetInstance()->GetUid()){
+            qDebug() << "Receive ID_NOTIFY_OFF_LINE_REQ Success " ;
+            emit sig_notify_offline();
+
+        }
    });
 }
 

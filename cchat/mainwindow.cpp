@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "tcpmgr.h"
+#include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -32,6 +33,11 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(TcpMgr::GetInstance().get(), &TcpMgr::sig_swich_chatdlg, this, &MainWindow::SlotSwitchChat);
 
 //    emit TcpMgr::GetInstance()->sig_swich_chatdlg();
+
+
+    // 连接，接收到下线通知
+    connect(TcpMgr::GetInstance().get(), &TcpMgr::sig_notify_offline, this, &MainWindow::slot_notify_offline);
+
 }
 
 MainWindow::~MainWindow()
@@ -103,4 +109,37 @@ void MainWindow::SlotSwitchChat()
     this->setMinimumSize(QSize(1080,800));
     this->setMaximumSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
 }
+
+void MainWindow::slot_notify_offline()
+{
+    QMessageBox::critical(
+        this,                   // 父窗口指针（保证模态性）
+        "下线提示",             // 弹窗标题
+        "同账号异地登录，请重新登录", // 错误详情
+        QMessageBox::Ok         // 显示"确定"按钮
+    );
+    TcpMgr::GetInstance()->CloseConnection();
+    offline_switch_login();
+}
+
+void MainWindow::offline_switch_login()
+{
+    _login_dlg = new LoginDialog(this); // 这里得 new
+    _login_dlg->setWindowFlags(Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
+    setCentralWidget(_login_dlg);
+
+    _chat_dlg->hide();
+
+
+    this->setMaximumSize(300,500);
+    this->setMinimumSize(300,500);
+    this->resize(300,500);
+    _login_dlg->show();
+
+
+    connect(_login_dlg, &LoginDialog::sigSwitchRegister, this, &MainWindow::SlotSwitchReg);
+    connect(_login_dlg, &LoginDialog::sigSwitchReset, this, &MainWindow::SlotSwitchReset);
+
+}
+
 
