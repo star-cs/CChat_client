@@ -35,10 +35,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
 //    emit TcpMgr::GetInstance()->sig_swich_chatdlg();
 
-
     // 连接，接收到下线通知
     connect(TcpMgr::GetInstance().get(), &TcpMgr::sig_notify_offline, this, &MainWindow::slot_notify_offline);
-
 
     // 连接，接收到 断开连接 通知
     connect(TcpMgr::GetInstance().get(), &TcpMgr::sig_connection_closed, this, &MainWindow::slot_excepcon_offline);
@@ -118,6 +116,8 @@ void MainWindow::SlotSwitchChat()
     _chat_dlg->show();
     this->setMinimumSize(QSize(1080,800));
     this->setMaximumSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
+    // 请求chatserver，增量加载聊天记录
+    _chat_dlg->loadChatList();
 }
 
 void MainWindow::slot_notify_offline()

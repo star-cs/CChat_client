@@ -18,7 +18,7 @@ class ApplyFriendPage : public QWidget
 public:
     explicit ApplyFriendPage(QWidget *parent = nullptr);
     ~ApplyFriendPage();
-    void AddNewApply(std::shared_ptr<ApplyInfo> apply);
+    void AddNewApply(std::shared_ptr<AddFriendApply> apply);
 protected:
     void paintEvent(QPaintEvent *event);
 private:

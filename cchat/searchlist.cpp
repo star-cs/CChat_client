@@ -1,15 +1,14 @@
 #include "searchlist.h"
 #include<QScrollBar>
 #include "adduseritem.h"
-//#include "invaliditem.h"
+#include "invaliditem.h"
 #include "findsuccessdlg.h"
 #include "tcpmgr.h"
 #include "customizeedit.h"
 #include "findfaildlg.h"
 #include "loadingdlg.h"
-#include <QJsonDocument>
+#include "userdata.h"
 #include "usermgr.h"
-#include <QDebug>
 
 SearchList::SearchList(QWidget *parent):QListWidget(parent),_find_dlg(nullptr), _search_edit(nullptr), _send_pending(false)
 {
@@ -65,7 +64,6 @@ void SearchList::addTipItem()
     item_tmp->setFlags(item_tmp->flags() & ~Qt::ItemIsSelectable);
 
 
-    // 默认的搜索框下 第一个 item 添加好友
     auto *add_user_item = new AddUserItem();
     QListWidgetItem *item = new QListWidgetItem;
     //qDebug()<<"chat_user_wid sizeHint is " << chat_user_wid->sizeHint();
@@ -100,13 +98,11 @@ void SearchList::slot_item_clicked(QListWidgetItem *item)
        if (_send_pending) {
            return;
        }
-       waitPending(true);
 
-       if(_search_edit == nullptr){
-           qDebug() << "search_list's search_edit 没有设置，无法得到搜索框的消息";
+       if (!_search_edit) {
            return;
        }
-
+       waitPending(true);
        auto search_edit = dynamic_cast<CustomizeEdit*>(_search_edit);
        auto uid_str = search_edit->text();
        //此处发送请求给server
@@ -114,10 +110,10 @@ void SearchList::slot_item_clicked(QListWidgetItem *item)
        jsonObj["uid"] = uid_str;
 
        QJsonDocument doc(jsonObj);
-       QByteArray jsonString = doc.toJson(QJsonDocument::Compact);
+       QByteArray jsonData = doc.toJson(QJsonDocument::Compact);
 
        //发送tcp请求给chat server
-       emit TcpMgr::GetInstance()->sig_send_data(ReqId::ID_SEARCH_USER_REQ, jsonString);
+       emit TcpMgr::GetInstance()->sig_send_data(ReqId::ID_SEARCH_USER_REQ, jsonData);
        return;
    }
 
@@ -125,29 +121,30 @@ void SearchList::slot_item_clicked(QListWidgetItem *item)
     CloseFindDlg();
 }
 
-
 void SearchList::slot_user_search(std::shared_ptr<SearchInfo> si)
 {
     waitPending(false);
     if (si == nullptr) {
         _find_dlg = std::make_shared<FindFailDlg>(this);
     }else{
-        // 搜到了自己
-        if(si->_uid == UserMgr::GetInstance()->GetUid()){
-            return;
+        //如果是自己，暂且先直接返回，以后看逻辑扩充
+        auto self_uid = UserMgr::GetInstance()->GetUid();
+        if (si->_uid == self_uid) {
+                 return;
         }
-
-        // 已经是好友了
-        if(UserMgr::GetInstance()->CheckFriendById(si->_uid)){
-            //此处处理已经添加的好友，实现页面跳转
+        //此处分两种情况，一种是搜多到已经是自己的朋友了，一种是未添加好友
+        //查找是否已经是好友
+        bool bExist = UserMgr::GetInstance()->CheckFriendById(si->_uid);
+        if(bExist){
+                //此处处理已经添加的好友，实现页面跳转
             //跳转到聊天界面指定的item中
-            emit sig_jump_chat_item(si->_uid);
+            emit sig_jump_chat_item(si);
             return;
         }
-
-        // 没有添加过的
+        //此处先处理为添加的好友
         _find_dlg = std::make_shared<FindSuccessDlg>(this);
         std::dynamic_pointer_cast<FindSuccessDlg>(_find_dlg)->SetSearchInfo(si);
+
     }
     _find_dlg->show();
 }

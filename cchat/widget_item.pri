@@ -10,7 +10,9 @@
 HEADERS += \
     listitembase.h \
     chatitembase.h \
+    $$PWD/invaliditem.h
 
 SOURCES += \
     listitembase.cpp \
-    chatitembase.cpp
+    chatitembase.cpp \
+    $$PWD/invaliditem.cpp

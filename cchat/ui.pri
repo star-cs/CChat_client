@@ -17,7 +17,10 @@ SOURCES += \
     $$PWD/applyfrienditem.cpp \	# 这个是 联系人，最右侧的 新朋友 每一条申请消息的item
     $$PWD/friendinfopage.cpp \	# 这个是 联系人，最右侧的 具体的好友 信息页面
     $$PWD/findfaildlg.cpp   \	# 联系人查找失败
-    authenfriend.cpp	    # 同意好友申请界面
+    authenfriend.cpp \	    # 同意好友申请界面
+    $$PWD/lineitem.cpp \
+    userinfopage.cpp \
+
 
 HEADERS += \
     mainwindow.h \
@@ -38,7 +41,10 @@ HEADERS += \
     $$PWD/applyfrienditem.h \
     $$PWD/friendinfopage.h \
     $$PWD/findfaildlg.h \
-    authenfriend.h
+    authenfriend.h \
+    $$PWD/lineitem.h \
+        userinfopage.h \
+        imagecropperdialog.h \
 
 FORMS += \
     mainwindow.ui \
@@ -59,4 +65,6 @@ FORMS += \
     $$PWD/applyfrienditem.ui \
     $$PWD/friendinfopage.ui \
     $$PWD/findfaildlg.ui \
-    authenfriend.ui
+    authenfriend.ui \
+    $$PWD/lineitem.ui \
+        userinfopage.ui \

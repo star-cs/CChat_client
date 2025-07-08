@@ -15,6 +15,8 @@ RC_ICONS = icon.ico
 DESTDIR = ./bin
 
 CONFIG += c++17
+CONFIG += debug
+QMAKE_CXXFLAGS += -Wall -Wextra
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings

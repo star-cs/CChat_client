@@ -1,12 +1,3 @@
-#include "chatview.h"
-#include <QVBoxLayout>
-#include <QScrollArea>
-#include <QScrollBar>
-#include <QEvent>
-#include <QStyleOption>
-#include <QPainter>
-#include <QTImer>
-
 /*
 +-----------------------------------+
 |         主窗口（QWidget）           |
@@ -29,37 +20,42 @@
 +-----------------------------------+
 */
 
-ChatView::ChatView(QWidget *parent) : QWidget(parent), isAppended(false)
+#include "ChatView.h"
+#include <QScrollBar>
+#include <QVBoxLayout>
+#include <QEvent>
+#include <QDebug>
+
+#include <QTimer>
+#include <QStyleOption>
+#include <QPainter>
+
+ChatView::ChatView(QWidget *parent)
+   : QWidget(parent)
+   , isAppended(false)
 {
-    // 布局
     QVBoxLayout *pMainLayout = new QVBoxLayout();
     this->setLayout(pMainLayout);
     pMainLayout->setMargin(0);
 
-    // 滚动区域（无默认滚动条）
     m_pScrollArea = new QScrollArea();
     m_pScrollArea->setObjectName("chat_area");
     pMainLayout->addWidget(m_pScrollArea);
 
-    // 内部容器
     QWidget *w = new QWidget(this);
     w->setObjectName("chat_bg");
     w->setAutoFillBackground(true);
-
-    // w 内的 垂直布局
     QVBoxLayout *pHLayout_1 = new QVBoxLayout();
-    pHLayout_1->addWidget(new QWidget(), 100000);   // new QWidget（） 弹簧，占位QWidget，拉伸因子100000
-
+    pHLayout_1->addWidget(new QWidget(), 100000);
     w->setLayout(pHLayout_1);
-    m_pScrollArea->setWidget(w);  //应该时在QSCrollArea构造后执行 才对
+    m_pScrollArea->setWidget(w);    //应该时在QSCrollArea构造后执行 才对
 
-    m_pScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);    // 滚动区域（无默认滚动条）
-    QScrollBar *pVScrollBar = m_pScrollArea->verticalScrollBar();   // 滚动区域 的 滚动条 需要 单独设置布局
-    connect(pVScrollBar, &QScrollBar::rangeChanged ,this, &ChatView::onVScrollBarMoved);
-
+    m_pScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    QScrollBar *pVScrollBar = m_pScrollArea->verticalScrollBar();
+    connect(pVScrollBar, &QScrollBar::rangeChanged,this, &ChatView::onVScrollBarMoved);
     //把垂直ScrollBar放到上边 而不是原来的并排
     QHBoxLayout *pHLayout_2 = new QHBoxLayout();
-    pHLayout_2->addWidget(pVScrollBar, 0, Qt::AlignRight);  // 脱离原本的布局位置，添加到自定义的布局 pHLayout_2
+    pHLayout_2->addWidget(pVScrollBar, 0, Qt::AlignRight);
     pHLayout_2->setMargin(0);
     m_pScrollArea->setLayout(pHLayout_2);
     pVScrollBar->setHidden(true);
@@ -72,6 +68,7 @@ ChatView::ChatView(QWidget *parent) : QWidget(parent), isAppended(false)
 void ChatView::appendChatItem(QWidget *item)
 {
    QVBoxLayout *vl = qobject_cast<QVBoxLayout *>(m_pScrollArea->widget()->layout());
+   qDebug() << "vl->count() is " << vl->count();
    vl->insertWidget(vl->count()-1, item);
    isAppended = true;
 }
@@ -89,22 +86,28 @@ void ChatView::insertChatItem(QWidget *before, QWidget *item)
 void ChatView::removeAllItem()
 {
     QVBoxLayout *layout = qobject_cast<QVBoxLayout *>(m_pScrollArea->widget()->layout());
-    int count = layout->count();
-    for(int i = 0 ; i < count-1 ; ++i){ // 备注： count-1，因为这里是头插法，最后有一个widget作为填充 ~
-        // 备注： takeAt 用于动态移除并返回布局中指定索引位置的布局项
-        QLayoutItem *item = layout->takeAt(0);
-        if(item){
-            if(QWidget* wid = item->widget()){
-                delete wid;
+
+   int count = layout->count();
+
+    for (int i = 0; i < count - 1; ++i) {
+        QLayoutItem *item = layout->takeAt(0); // 始终从第一个控件开始删除
+        if (item) {
+            if (QWidget *widget = item->widget()) {
+                delete widget;
             }
             delete item;
         }
     }
+
 }
 
 bool ChatView::eventFilter(QObject *o, QEvent *e)
 {
-    if(e->type() == QEvent::Enter && o == m_pScrollArea)
+    /*if(e->type() == QEvent::Resize && o == )
+    {
+
+    }
+    else */if(e->type() == QEvent::Enter && o == m_pScrollArea)
     {
         m_pScrollArea->verticalScrollBar()->setHidden(m_pScrollArea->verticalScrollBar()->maximum() == 0);
     }
@@ -113,17 +116,16 @@ bool ChatView::eventFilter(QObject *o, QEvent *e)
          m_pScrollArea->verticalScrollBar()->setHidden(true);
     }
     return QWidget::eventFilter(o, e);
-
 }
 
 void ChatView::paintEvent(QPaintEvent *event)
 {
-    Q_UNUSED(event);
     QStyleOption opt;
     opt.init(this);
     QPainter p(this);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
+
 
 void ChatView::onVScrollBarMoved(int min, int max)
 {
@@ -141,5 +143,12 @@ void ChatView::onVScrollBarMoved(int min, int max)
 
 void ChatView::initStyleSheet()
 {
-
+//    QScrollBar *scrollBar = m_pScrollArea->verticalScrollBar();
+//    scrollBar->setStyleSheet("QScrollBar{background:transparent;}"
+//                             "QScrollBar:vertical{background:transparent;width:8px;}"
+//                             "QScrollBar::handle:vertical{background:red; border-radius:4px;min-height:20px;}"
+//                             "QScrollBar::add-line:vertical{height:0px}"
+//                             "QScrollBar::sub-line:vertical{height:0px}"
+//                             "QScrollBar::add-page:vertical {background:transparent;}"
+//                             "QScrollBar::sub-page:vertical {background:transparent;}");
 }

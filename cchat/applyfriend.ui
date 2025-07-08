@@ -118,12 +118,12 @@
              </size>
             </property>
             <property name="text">
-             <string>发送添加朋友申请 我的名字</string>
+             <string>发送添加朋友申请</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="CustomizeEdit" name="selfName_ed">
+           <widget class="CustomizeEdit" name="call_ed">
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -153,12 +153,12 @@
              </size>
             </property>
             <property name="text">
-             <string>对方名字</string>
+             <string>备注名</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="CustomizeEdit" name="toName_ed">
+           <widget class="CustomizeEdit" name="back_ed">
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -230,39 +230,28 @@
                  <height>40</height>
                 </size>
                </property>
-               <layout class="QVBoxLayout" name="verticalLayout_7">
-                <property name="spacing">
-                 <number>0</number>
+               <widget class="CustomizeEdit" name="lb_ed">
+                <property name="geometry">
+                 <rect>
+                  <x>2</x>
+                  <y>2</y>
+                  <width>108</width>
+                  <height>35</height>
+                 </rect>
                 </property>
-                <property name="leftMargin">
-                 <number>0</number>
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>0</height>
+                 </size>
                 </property>
-                <property name="topMargin">
-                 <number>0</number>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>35</height>
+                 </size>
                 </property>
-                <property name="rightMargin">
-                 <number>0</number>
-                </property>
-                <property name="bottomMargin">
-                 <number>0</number>
-                </property>
-                <item>
-                 <widget class="CustomizeEdit" name="lb_ed">
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>16777215</width>
-                    <height>35</height>
-                   </size>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
+               </widget>
               </widget>
              </item>
              <item>
@@ -552,14 +541,14 @@
  </widget>
  <customwidgets>
   <customwidget>
+   <class>CustomizeEdit</class>
+   <extends>QLineEdit</extends>
+   <header>customizeedit.h</header>
+  </customwidget>
+  <customwidget>
    <class>ClickedBtn</class>
    <extends>QPushButton</extends>
    <header>clickedbtn.h</header>
-  </customwidget>
-  <customwidget>
-   <class>CustomizeEdit</class>
-   <extends>QLineEdit</extends>
-   <header location="global">customizeedit.h</header>
   </customwidget>
   <customwidget>
    <class>ClickedOnceLabel</class>

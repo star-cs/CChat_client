@@ -11,7 +11,7 @@ public:
     virtual void mouseReleaseEvent(QMouseEvent *ev) override;
 
 signals:
-    void clicked(QString );
+    void clicked(QString text);
 };
 
 #endif // CLICKEDONCELABEL_H

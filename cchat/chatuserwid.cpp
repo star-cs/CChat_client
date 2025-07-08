@@ -1,5 +1,6 @@
 #include "chatuserwid.h"
 #include "ui_chatuserwid.h"
+#include "usermgr.h"
 
 ChatUserWid::ChatUserWid(QWidget *parent) :
     ListItemBase(parent),
@@ -11,44 +12,36 @@ ChatUserWid::ChatUserWid(QWidget *parent) :
     ShowRedPoint(false);
 }
 
-
 ChatUserWid::~ChatUserWid()
 {
     delete ui;
 }
 
-void ChatUserWid::SetInfo(const std::shared_ptr<UserInfo>& user_info)
+QSize ChatUserWid::sizeHint() const
 {
-    _uid = user_info->_uid;
-    _icon = user_info->_icon;
-    _name = user_info->_name;
-    _last_msg = user_info->_last_msg;
-    // 加载图片
-    QPixmap pixmap(_icon);
-
-    // 设置图片自动缩放
-    ui->icon_lb->setPixmap(pixmap.scaled(ui->icon_lb->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
-    ui->icon_lb->setScaledContents(true);
-
-    ui->user_name_lb->setText(_name);
-    ui->user_chat_lb->setText(_last_msg);
+    return QSize(250, 70); // 返回自定义的尺寸
 }
 
-void ChatUserWid::SetInfo(const std::shared_ptr<FriendInfo>& friend_info)
-{
-    _uid = friend_info->_uid;
-    _icon = friend_info->_icon;
-    _name = friend_info->_name;
-    _last_msg = friend_info->_last_msg;
+void ChatUserWid::SetChatData(std::shared_ptr<ChatThreadData> chat_data) {
+    _chat_data = chat_data;
+    auto other_id = _chat_data->GetOtherId();
+    auto other_info = UserMgr::GetInstance()->GetFriendById(other_id);
     // 加载图片
-    QPixmap pixmap(_icon);
+    QPixmap pixmap(other_info->_icon);
 
     // 设置图片自动缩放
     ui->icon_lb->setPixmap(pixmap.scaled(ui->icon_lb->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
     ui->icon_lb->setScaledContents(true);
 
-    ui->user_name_lb->setText(_name);
-    ui->user_chat_lb->setText(_last_msg);
+    ui->user_name_lb->setText(other_info->_name);
+
+    ui->user_chat_lb->setText(chat_data->GetLastMsg());
+
+}
+
+std::shared_ptr<ChatThreadData> ChatUserWid::GetChatData()
+{
+    return _chat_data;
 }
 
 void ChatUserWid::ShowRedPoint(bool bshow)
@@ -60,9 +53,16 @@ void ChatUserWid::ShowRedPoint(bool bshow)
     }
 }
 
-void ChatUserWid::updateLastMsg(const std::vector<std::shared_ptr<TextChatData> >& msgs)
-{
-    _last_msg = msgs.back()->_msg_content;
-    ShowRedPoint(true);
-    ui->user_chat_lb->setText(_last_msg);
+void ChatUserWid::updateLastMsg(std::vector<std::shared_ptr<TextChatData>> msgs) {
+
+    int last_msg_id = 0;
+    QString last_msg = "";
+    for (auto& msg : msgs) {
+        last_msg = msg->GetContent();
+        last_msg_id = msg->GetMsgId();
+        _chat_data->AddMsg(msg);
+    }
+
+    _chat_data->SetLastMsgId(last_msg_id);
+    ui->user_chat_lb->setText(last_msg);
 }

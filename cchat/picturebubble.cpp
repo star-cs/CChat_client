@@ -1,29 +1,21 @@
 #include "PictureBubble.h"
 #include <QLabel>
 
-#define PIC_MAX_WIDTH 320
-#define PIC_MAX_HEIGHT 200
 
-PictureBubble::PictureBubble(const QPixmap &picture, ChatRole role, MessageStatus status,  QWidget *parent)
-    :BubbleFrame(role, status, parent)
+#define PIC_MAX_WIDTH 160
+#define PIC_MAX_HEIGHT 90
+
+PictureBubble::PictureBubble(const QPixmap &picture, ChatRole role, QWidget *parent)
+    :BubbleFrame(role, parent)
 {
     QLabel *lb = new QLabel();
-    lb->setScaledContents(false); // 关闭自动拉伸，改为手动控制缩放比例
-
-    // 关键修改：按原始比例缩放，且不超过最大尺寸
-    QPixmap scaledPix = picture.scaled(
-        PIC_MAX_WIDTH,
-        PIC_MAX_HEIGHT,
-        Qt::KeepAspectRatio,   // 保持原始宽高比
-        Qt::SmoothTransformation // 平滑缩放保证质量
-    );
-    lb->setPixmap(scaledPix);
+    lb->setScaledContents(true);
+    QPixmap pix = picture.scaled(QSize(PIC_MAX_WIDTH, PIC_MAX_HEIGHT), Qt::KeepAspectRatio);
+    lb->setPixmap(pix);
     this->setWidget(lb);
 
-    // 根据缩放后的图片尺寸调整气泡大小
-    const QMargins margins = this->layout()->contentsMargins();
-    setFixedSize(
-        scaledPix.width() + margins.left() + margins.right(),
-        scaledPix.height() + margins.top() + margins.bottom()
-    );
+    int left_margin = this->layout()->contentsMargins().left();
+    int right_margin = this->layout()->contentsMargins().right();
+    int v_margin = this->layout()->contentsMargins().bottom();
+    setFixedSize(pix.width()+left_margin + right_margin, pix.height() + v_margin *2);
 }

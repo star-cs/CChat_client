@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>998</width>
-    <height>640</height>
+    <width>1267</width>
+    <height>824</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -31,27 +31,33 @@
    </property>
    <item>
     <widget class="QWidget" name="side_bar" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="minimumSize">
       <size>
-       <width>60</width>
+       <width>56</width>
        <height>0</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>60</width>
+       <width>56</width>
        <height>16777215</height>
       </size>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
+     <layout class="QVBoxLayout" name="verticalLayout_4">
       <property name="spacing">
-       <number>2</number>
+       <number>30</number>
       </property>
       <property name="leftMargin">
-       <number>0</number>
+       <number>10</number>
       </property>
       <property name="topMargin">
-       <number>0</number>
+       <number>30</number>
       </property>
       <property name="rightMargin">
        <number>0</number>
@@ -60,22 +66,16 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QWidget" name="widget" native="true">
+       <widget class="QWidget" name="widget_2" native="true">
         <property name="minimumSize">
          <size>
-          <width>0</width>
-          <height>50</height>
+          <width>29</width>
+          <height>29</height>
          </size>
         </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_2">
+        <layout class="QVBoxLayout" name="verticalLayout_5">
          <property name="spacing">
-          <number>0</number>
+          <number>30</number>
          </property>
          <property name="leftMargin">
           <number>0</number>
@@ -90,60 +90,25 @@
           <number>0</number>
          </property>
          <item>
-          <spacer name="verticalSpacer_2">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::Fixed</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>40</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item alignment="Qt::AlignHCenter">
           <widget class="QLabel" name="side_head_lb">
            <property name="minimumSize">
             <size>
-             <width>50</width>
-             <height>50</height>
+             <width>35</width>
+             <height>35</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>50</width>
-             <height>50</height>
+             <width>35</width>
+             <height>35</height>
             </size>
            </property>
            <property name="text">
             <string/>
            </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
           </widget>
          </item>
          <item>
-          <spacer name="verticalSpacer_3">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::Fixed</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item alignment="Qt::AlignHCenter">
           <widget class="StateWidget" name="side_chat_lb" native="true">
            <property name="minimumSize">
             <size>
@@ -157,29 +122,26 @@
              <height>30</height>
             </size>
            </property>
-           <property name="layoutDirection">
-            <enum>Qt::LeftToRight</enum>
+          </widget>
+         </item>
+         <item>
+          <widget class="StateWidget" name="side_contact_lb" native="true">
+           <property name="minimumSize">
+            <size>
+             <width>30</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>30</width>
+             <height>30</height>
+            </size>
            </property>
           </widget>
          </item>
          <item>
-          <spacer name="verticalSpacer_4">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::Fixed</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item alignment="Qt::AlignHCenter">
-          <widget class="StateWidget" name="side_contact_lb" native="true">
+          <widget class="StateWidget" name="side_settings_lb" native="true">
            <property name="minimumSize">
             <size>
              <width>30</width>
@@ -198,12 +160,12 @@
        </widget>
       </item>
       <item>
+       <widget class="QWidget" name="widget" native="true"/>
+      </item>
+      <item>
        <spacer name="verticalSpacer">
         <property name="orientation">
          <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Expanding</enum>
         </property>
         <property name="sizeHint" stdset="0">
          <size>
@@ -213,49 +175,17 @@
         </property>
        </spacer>
       </item>
-      <item>
-       <widget class="QLabel" name="label">
-        <property name="minimumSize">
-         <size>
-          <width>50</width>
-          <height>50</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>50</width>
-          <height>50</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>设置</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <spacer name="verticalSpacer_5">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Fixed</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
      </layout>
     </widget>
    </item>
    <item>
     <widget class="QWidget" name="chat_user_wid" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="minimumSize">
       <size>
        <width>250</width>
@@ -268,9 +198,9 @@
        <height>16777215</height>
       </size>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_3">
+     <layout class="QVBoxLayout" name="verticalLayout">
       <property name="spacing">
-       <number>2</number>
+       <number>0</number>
       </property>
       <property name="leftMargin">
        <number>0</number>
@@ -299,49 +229,65 @@
          </size>
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <property name="spacing">
+          <number>6</number>
+         </property>
          <property name="leftMargin">
-          <number>5</number>
+          <number>9</number>
          </property>
          <property name="topMargin">
-          <number>20</number>
+          <number>9</number>
          </property>
          <property name="rightMargin">
-          <number>5</number>
+          <number>9</number>
          </property>
          <property name="bottomMargin">
-          <number>10</number>
+          <number>9</number>
          </property>
          <item>
           <widget class="CustomizeEdit" name="search_edit">
            <property name="minimumSize">
             <size>
              <width>0</width>
-             <height>30</height>
+             <height>24</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
              <width>16777215</width>
-             <height>30</height>
+             <height>24</height>
             </size>
            </property>
-           <property name="locale">
-            <locale language="Chinese" country="China"/>
-           </property>
           </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Fixed</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>5</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
          </item>
          <item>
           <widget class="ClickedBtn" name="add_btn">
            <property name="minimumSize">
             <size>
-             <width>30</width>
-             <height>30</height>
+             <width>24</width>
+             <height>24</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>30</width>
-             <height>30</height>
+             <width>24</width>
+             <height>24</height>
             </size>
            </property>
            <property name="text">
@@ -353,13 +299,26 @@
        </widget>
       </item>
       <item>
-       <widget class="ChatUserList" name="chat_user_list"/>
+       <widget class="SearchList" name="search_list"/>
+      </item>
+      <item>
+       <widget class="ChatUserList" name="chat_user_list">
+        <property name="minimumSize">
+         <size>
+          <width>250</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>250</width>
+          <height>16777215</height>
+         </size>
+        </property>
+       </widget>
       </item>
       <item>
        <widget class="ContactUserList" name="con_user_list"/>
-      </item>
-      <item>
-       <widget class="SearchList" name="search_list"/>
       </item>
      </layout>
     </widget>
@@ -369,48 +328,16 @@
      <property name="minimumSize">
       <size>
        <width>50</width>
-       <height>50</height>
+       <height>0</height>
       </size>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
-     <widget class="QWidget" name="default_page">
-      <widget class="QLabel" name="default_icon">
-       <property name="geometry">
-        <rect>
-         <x>340</x>
-         <y>320</y>
-         <width>130</width>
-         <height>130</height>
-        </rect>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>130</width>
-         <height>130</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>130</width>
-         <height>130</height>
-        </size>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="pixmap">
-        <pixmap resource="rc.qrc">:/res/default_icon.png</pixmap>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </widget>
      <widget class="ChatPage" name="chat_page"/>
-     <widget class="FriendInfoPage" name="friend_info_page"/>
      <widget class="ApplyFriendPage" name="friend_apply_page"/>
+     <widget class="FriendInfoPage" name="friend_info_page"/>
+     <widget class="UserInfoPage" name="user_info_page"/>
     </widget>
    </item>
   </layout>
@@ -465,9 +392,13 @@
    <header>friendinfopage.h</header>
    <container>1</container>
   </customwidget>
+  <customwidget>
+   <class>UserInfoPage</class>
+   <extends>QWidget</extends>
+   <header location="global">userinfopage.h</header>
+   <container>1</container>
+  </customwidget>
  </customwidgets>
- <resources>
-  <include location="rc.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

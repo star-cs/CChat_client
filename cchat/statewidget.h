@@ -8,7 +8,7 @@ class StateWidget : public QWidget
 {
     Q_OBJECT
 public:
-    StateWidget(QWidget *parent = nullptr);
+    explicit StateWidget(QWidget *parent = nullptr);
 
     void SetState(QString normal="", QString hover="", QString press="",
                   QString select="", QString select_hover="", QString select_press="");

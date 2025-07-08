@@ -4,7 +4,6 @@
 #include <QPainter>
 #include <QLabel>
 #include <QVBoxLayout>
-#include <QDebug>
 
 StateWidget::StateWidget(QWidget *parent) : QWidget(parent),_curstate(ClickLbState::Normal)
 {
@@ -15,7 +14,6 @@ StateWidget::StateWidget(QWidget *parent) : QWidget(parent),_curstate(ClickLbSta
 
 void StateWidget::paintEvent(QPaintEvent *event)
 {
-    Q_UNUSED(event);
     QStyleOption opt;
     opt.init(this);
     QPainter p(this);
@@ -133,7 +131,6 @@ void StateWidget::ClearState()
     setProperty("state",_normal);
     repolish(this);
     update();
-    ShowRedPoint(false);
 }
 
 void StateWidget::SetSelected(bool bselected)
@@ -169,7 +166,7 @@ void StateWidget::AddRedPoint()
 
 void StateWidget::ShowRedPoint(bool show)
 {
-    _red_point->setVisible(show);
+    _red_point->setVisible(true);
 }
 
 

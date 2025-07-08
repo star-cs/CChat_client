@@ -5,8 +5,6 @@
 #include <QScrollBar>
 #include "usermgr.h"
 #include "tcpmgr.h"
-#include <QJsonDocument>
-#include <QByteArray>
 
 AuthenFriend::AuthenFriend(QWidget *parent) :
     QDialog(parent),
@@ -19,7 +17,8 @@ AuthenFriend::AuthenFriend(QWidget *parent) :
     this->setModal(true);
     ui->lb_ed->setPlaceholderText("搜索、添加标签");
     ui->back_ed->setPlaceholderText("燃烧的胸毛");
-    ui->back_ed->setEnabled(false);
+    ui->call_ed->setPlaceholderText("你好，我们可以开始聊天了");
+
     ui->lb_ed->SetMaxLength(21);
     ui->lb_ed->move(2, 2);
     ui->lb_ed->setFixedHeight(20);
@@ -198,7 +197,6 @@ void AuthenFriend::resetLabels()
     auto max_width = ui->gridWidget->width();
     auto label_height = 0;
     for(auto iter = _friend_labels.begin(); iter != _friend_labels.end(); iter++){
-        //todo... 添加宽度统计
         if( _label_point.x() + iter.value()->width() > max_width) {
             _label_point.setY(_label_point.y()+iter.value()->height()+6);
             _label_point.setX(2);
@@ -235,7 +233,7 @@ void AuthenFriend::addLabel(QString name)
     tmplabel->setObjectName("FriendLabel");
 
     auto max_width = ui->gridWidget->width();
-    //todo... 添加宽度统计
+
     if (_label_point.x() + tmplabel->width() > max_width) {
         _label_point.setY(_label_point.y() + tmplabel->height() + 6);
         _label_point.setX(2);
@@ -418,8 +416,21 @@ void AuthenFriend::SlotApplySure()
     //添加发送逻辑
     QJsonObject jsonObj;
     auto uid = UserMgr::GetInstance()->GetUid();
-    jsonObj["fromuid"] = _apply_info->_uid;     // 申请方
-    jsonObj["touid"] = uid;                     // 被申请方
+    jsonObj["fromuid"] = uid;
+    jsonObj["touid"] = _apply_info->_uid;
+    QString back_name = "";
+    if(ui->back_ed->text().isEmpty()){
+        back_name = ui->back_ed->placeholderText();
+    }else{
+        back_name = ui->back_ed->text();
+    }
+    jsonObj["backname"] = back_name;
+
+    auto call = ui->call_ed->text();
+    if(call.isEmpty()){
+        call = ui->call_ed->placeholderText();
+    }
+    jsonObj["call_str"] = call;
 
     QJsonDocument doc(jsonObj);
     QByteArray jsonData = doc.toJson(QJsonDocument::Compact);

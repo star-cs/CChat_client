@@ -68,7 +68,7 @@ LoginDialog::LoginDialog(QWidget *parent) :
     connect(this, &LoginDialog::sig_connect_tcp, TcpMgr::GetInstance().get(), &TcpMgr::slot_tcp_connect);
 
     //连接 TcpMgr 发送的连接成功信号
-    connect(TcpMgr::GetInstance().get(), &TcpMgr::sig_conn_success, this, &LoginDialog::slot_tcp_con_finish);
+    connect(TcpMgr::GetInstance().get(), &TcpMgr::sig_con_success, this, &LoginDialog::slot_tcp_con_finish);
 
     //连接 TcpMgr 发送的连接失败信号
     connect(TcpMgr::GetInstance().get(), &TcpMgr::sig_login_failed, this, &LoginDialog::slot_login_failed);
@@ -122,15 +122,15 @@ void LoginDialog::initHttpHandlers()
         }
         auto email = jsonObj["email"].toString();
         ServerInfo server;
-        server.host = jsonObj["host"].toString();
-        server.port = jsonObj["port"].toString();
-        server.token = jsonObj["token"].toString();
-        server.uid = jsonObj["uid"].toInt();
+        server.Host = jsonObj["host"].toString();
+        server.Port = jsonObj["port"].toString();
+        server.Token = jsonObj["token"].toString();
+        server.Uid = jsonObj["uid"].toInt();
 
-        _uid = server.uid;
-        _token = server.token;
-        qDebug()<< "email is " << email << " uid is " << server.uid <<" host is "
-                << server.host << " Port is " << server.port << " Token is " << server.token;
+        _uid = server.Uid;
+        _token = server.Token;
+        qDebug()<< "email is " << email << " uid is " << server.Uid <<" host is "
+                << server.Host << " Port is " << server.Port << " Token is " << server.Token;
 
         // 发送消息通知 tcpMgr 建立长链接
         emit sig_connect_tcp(server);
