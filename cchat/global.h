@@ -44,6 +44,9 @@ enum ReqId{
     ID_LOAD_CHAT_THREAD_RSP = 1026,      //加载聊天线程回复
     ID_CREATE_PRIVATE_CHAT_REQ = 1027, //创建私聊请求
     ID_CREATE_PRIVATE_CHAT_RSP = 1028, //创建私聊回复
+
+    ID_LOAD_CHAT_MSG_REQ = 1029,  //创建加载聊天消息请求
+    ID_LOAD_CHAT_MSG_RSP = 1030,  //创建加载聊天消息回复
 };
 
 

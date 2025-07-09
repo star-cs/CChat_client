@@ -13,16 +13,16 @@ AddFriendApply::AddFriendApply(int from_uid, QString name, QString desc,
 }
 
 ChatDataBase::ChatDataBase(int msg_id, int thread_id, ChatFormType form_type,
-    ChatMsgType msg_type, QString content, int send_uid):_msg_id(msg_id),
+    ChatMsgType msg_type, QString content, int send_uid, QString create_time):_msg_id(msg_id),
 _thread_id(thread_id), _form_type(form_type),
-_msg_type(msg_type), _content(content), _send_uid(send_uid){
+_msg_type(msg_type), _content(content), _send_uid(send_uid), _create_time(create_time){
 
 }
 
 ChatDataBase::ChatDataBase(QString unique_id, int thread_id, ChatFormType form_type,
-    ChatMsgType msg_type, QString content, int send_uid):_unique_id(unique_id),
+    ChatMsgType msg_type, QString content, int send_uid, QString create_time):_unique_id(unique_id),
     _thread_id(thread_id), _form_type(form_type),
-    _msg_type(msg_type), _content(content), _send_uid(send_uid),_msg_id(0)
+    _msg_type(msg_type), _content(content), _send_uid(send_uid),_msg_id(0),  _create_time(create_time)
 {
 
 }
@@ -75,13 +75,6 @@ int ChatThreadData::GetThreadId()
 QMap<int, std::shared_ptr<ChatDataBase>>& ChatThreadData::GetMsgMapRef()
 {
     return _msg_map;
-}
-
-
-void ChatThreadData::AppendMsg(int msg_id, std::shared_ptr<ChatDataBase> base_msg) {
-    _msg_map.insert(msg_id, base_msg);
-    _last_msg = base_msg->GetMsgContent();
-    _last_msg_id = msg_id;
 }
 
 QString ChatThreadData::GetLastMsg()

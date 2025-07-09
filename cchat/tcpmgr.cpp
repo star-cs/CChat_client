@@ -159,6 +159,7 @@ void TcpMgr::initHandlers()
             UserMgr::GetInstance()->AppendFriendList(jsonObj["friend_list"].toArray());
         }
 
+        //流程1：登录成功切换用户界面
         emit sig_swich_chatdlg();
     });
 
@@ -270,6 +271,7 @@ void TcpMgr::initHandlers()
         QString name = jsonObj["name"].toString();
         QString nick = jsonObj["nick"].toString();
         QString icon = jsonObj["icon"].toString();
+        QString desc = jsonObj["desc"].toString();
         int sex = jsonObj["sex"].toInt();
 
         std::vector<std::shared_ptr<TextChatData>> chat_datas;
@@ -285,11 +287,13 @@ void TcpMgr::initHandlers()
         }
 
         auto auth_info = std::make_shared<AuthInfo>(from_uid,name,
-                                                    nick, icon, sex);
+                                                    nick, icon, sex, desc);
 
         auth_info->SetChatDatas(chat_datas);
 
         emit sig_add_auth_friend(auth_info);
+        // 1. 通知 ChatDialog 加载会话item, 以及 登记待加载的会话id (在这里添加到UserMgr内存里)
+        // 2. 通知 ContactUserList 加载 联系人 item
         });
 
     _handlers.insert(ID_ADD_FRIEND_RSP, [this](ReqId id, int len, QByteArray data) {
@@ -353,6 +357,7 @@ void TcpMgr::initHandlers()
         auto icon = jsonObj["icon"].toString();
         auto sex = jsonObj["sex"].toInt();
         auto uid = jsonObj["uid"].toInt();
+        auto desc = jsonObj["desc"].toString();
 
         std::vector<std::shared_ptr<TextChatData>> chat_datas;
         if(jsonObj.contains("chat_datas")){
@@ -368,11 +373,14 @@ void TcpMgr::initHandlers()
             }
         }
 
-        auto rsp = std::make_shared<AuthRsp>(uid, name, nick, icon, sex);
-        if(!chat_datas.empty()){
-            rsp->SetChatDatas(chat_datas);
-        }
+        auto rsp = std::make_shared<AuthRsp>(uid, name, nick, icon, sex, desc);
+
+
+        rsp->SetChatDatas(chat_datas);
         emit sig_auth_rsp(rsp);
+        // 0. 好友申请 设置为 已同意
+        // 1. 通知 ChatDialog 加载会话item, 以及 登记待加载的会话id (在这里添加到UserMgr内存里)
+        // 2. 通知 ContactUserList 加载 联系人 item
 
         qDebug() << "Auth Friend Success " ;
       });
@@ -597,6 +605,56 @@ void TcpMgr::initHandlers()
 
         //发送信号通知界面
         emit sig_create_private_chat(uid, other_id, thread_id);
+   });
+
+        _handlers.insert(ID_LOAD_CHAT_MSG_RSP, [this](ReqId id, int len, QByteArray data) {
+            Q_UNUSED(len);
+            qDebug() << "handle id is " << id << " data is " << data;
+            // 将QByteArray转换为QJsonDocument
+            QJsonDocument jsonDoc = QJsonDocument::fromJson(data);
+
+            // 检查转换是否成功
+            if (jsonDoc.isNull()) {
+                qDebug() << "Failed to create QJsonDocument.";
+                return;
+            }
+
+            QJsonObject jsonObj = jsonDoc.object();
+
+            if (!jsonObj.contains("error")) {
+                int err = ErrorCodes::ERR_JSON;
+                qDebug() << "parse load thread chat json parse failed " << err;
+                return;
+            }
+
+            int err = jsonObj["error"].toInt();
+            if (err != ErrorCodes::SUCCESS) {
+                qDebug() << "get load thread chat failed, error is " << err;
+                return;
+            }
+
+            qDebug() << "Receive load thread chat rsp Success";
+
+            int thread_id = jsonObj["thread_id"].toInt();
+            int last_msg_id = jsonObj["last_message_id"].toInt();
+            bool load_more = jsonObj["load_more"].toBool();
+
+            // 展示只考虑 文本
+            std::vector<std::shared_ptr<TextChatData>> chat_datas;
+            for (const QJsonValue& data : jsonObj["chat_datas"].toArray()) {
+                auto send_uid = data["sender"].toInt();
+                auto msg_id = data["msg_id"].toInt();
+                auto thread_id = data["thread_id"].toInt();
+                auto unique_id = data["unique_id"].toInt();
+                auto msg_content = data["msg_content"].toString();
+                QString chat_time = data["chat_time"].toString();
+                auto chat_data = std::make_shared<TextChatData>(msg_id, thread_id, ChatFormType::PRIVATE,
+                                                                ChatMsgType::TEXT, msg_content, send_uid, chat_time);
+                chat_datas.push_back(chat_data);
+            }
+
+            //发送信号通知界面
+            emit sig_load_chat_msg(thread_id, last_msg_id, load_more, chat_datas);
         });
 }
 

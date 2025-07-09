@@ -11,6 +11,8 @@
 #include "userdata.h"
 #include <QListWidgetItem>
 #include "loadingdlg.h"
+
+
 namespace Ui {
 class ChatDialog;
 }
@@ -22,14 +24,13 @@ class ChatDialog : public QDialog
 public:
     explicit ChatDialog(QWidget *parent = nullptr);
     ~ChatDialog();
-    void loadChatList();
+    void loadChatList(); // 最初 初始化 调用，加载聊天会话
 protected:
     bool eventFilter(QObject *watched, QEvent *event) override ;
 
     void handleGlobalMousePress(QMouseEvent *event) ;
     void CloseFindDlg();
     void UpdateChatMsg(std::vector<std::shared_ptr<TextChatData>> msgdata);
-
 private:
     void showLoadingDlg(bool show = true);
     void AddLBGroup(StateWidget* lb);
@@ -38,6 +39,8 @@ private:
     void loadMoreConUser();
     void SetSelectChatItem(int thread_id = 0);
     void SetSelectChatPage(int thread_id = 0);
+    void loadChatMsg();
+
     Ui::ChatDialog *ui;
     bool _b_loading;
     QList<StateWidget*> _lb_list;
@@ -51,6 +54,7 @@ private:
     int _cur_chat_thread_id;
     QTimer * _timer;
     LoadingDlg* _loading_dlg;
+    std::shared_ptr<ChatThreadData> _cur_load_chat; //当前需要加载的会话id的聊天内容
 public slots:
     void slot_loading_chat_user();
     void slot_side_chat();
@@ -73,6 +77,8 @@ public slots:
         std::vector<std::shared_ptr<ChatThreadInfo>> chat_threads);
 
     void slot_create_private_chat(int uid, int other_id, int thread_id);
+
+    void slot_load_chat_msg(int thread_id, int msg_id, bool load_more, std::vector<std::shared_ptr<TextChatData>> msglists);
 private slots:
 
 };

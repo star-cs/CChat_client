@@ -73,7 +73,7 @@ void ContactUserList::addContactUserList()
     auto con_list = UserMgr::GetInstance()->GetConListPerPage();
     for(auto & con_ele : con_list){
         auto *con_user_wid = new ConUserItem();
-        con_user_wid->SetInfo(con_ele->_uid,con_ele->_name, con_ele->_icon);
+        con_user_wid->SetInfo(con_ele);
         QListWidgetItem *item = new QListWidgetItem;
         //qDebug()<<"chat_user_wid sizeHint is " << chat_user_wid->sizeHint();
         item->setSizeHint(con_user_wid->sizeHint());
@@ -125,7 +125,7 @@ bool ContactUserList::eventFilter(QObject *watched, QEvent *event)
 
             // 滚动到底部，加载新的联系人
             qDebug()<<"load more contact user";
-            //发送信号通知聊天界面加载更多聊天内容
+            // 流程 ： 发送信号通知聊天界面加载更多聊天内容
             emit sig_loading_contact_user();
 
             _load_pending = false;
@@ -183,16 +183,12 @@ void ContactUserList::slot_item_clicked(QListWidgetItem *item)
 
 void ContactUserList::slot_add_auth_firend(std::shared_ptr<AuthInfo> auth_info)
 {
+    // 加载联系人
     qDebug() << "slot add auth friend ";
     bool isFriend = UserMgr::GetInstance()->CheckFriendById(auth_info->_uid);
     if(isFriend){
         return;
     }
-    // 在 groupitem 之后插入新项
-    int randomValue = QRandomGenerator::global()->bounded(100); // 生成0到99之间的随机整数
-    int str_i = randomValue%strs.size();
-    int head_i = randomValue%heads.size();
-
     auto *con_user_wid = new ConUserItem();
     con_user_wid->SetInfo(auth_info);
     QListWidgetItem *item = new QListWidgetItem;
@@ -214,13 +210,9 @@ void ContactUserList::slot_auth_rsp(std::shared_ptr<AuthRsp> auth_rsp)
     if(isFriend){
         return;
     }
-    // 在 groupitem 之后插入新项
-    int randomValue = QRandomGenerator::global()->bounded(100); // 生成0到99之间的随机整数
-    int str_i = randomValue%strs.size();
-    int head_i = randomValue%heads.size();
 
     auto *con_user_wid = new ConUserItem();
-    con_user_wid->SetInfo(auth_rsp->_uid ,auth_rsp->_name, auth_rsp->_icon);
+    con_user_wid->SetInfo(auth_rsp);
     QListWidgetItem *item = new QListWidgetItem;
     //qDebug()<<"chat_user_wid sizeHint is " << chat_user_wid->sizeHint();
     item->setSizeHint(con_user_wid->sizeHint());

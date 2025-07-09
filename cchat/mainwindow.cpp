@@ -109,6 +109,7 @@ void MainWindow::SlotSwitchReset()
 void MainWindow::SlotSwitchChat()
 {
     _ui_status = CHAT_UI;
+    //流程2：初始化用户窗口，登录成功后好友消息，好友申请信息分别在 自定义控件 contactuserlist，applyfriendlist初始化完成。
     _chat_dlg = new ChatDialog(this);
     _chat_dlg->setWindowFlags(Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
     setCentralWidget(_chat_dlg);
@@ -116,7 +117,7 @@ void MainWindow::SlotSwitchChat()
     _chat_dlg->show();
     this->setMinimumSize(QSize(1080,800));
     this->setMaximumSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
-    // 请求chatserver，增量加载聊天记录
+    //流程3：请求chatserver，增量加载聊天会话
     _chat_dlg->loadChatList();
 }
 

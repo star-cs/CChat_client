@@ -36,7 +36,6 @@ void ChatUserWid::SetChatData(std::shared_ptr<ChatThreadData> chat_data) {
     ui->user_name_lb->setText(other_info->_name);
 
     ui->user_chat_lb->setText(chat_data->GetLastMsg());
-
 }
 
 std::shared_ptr<ChatThreadData> ChatUserWid::GetChatData()
@@ -53,8 +52,11 @@ void ChatUserWid::ShowRedPoint(bool bshow)
     }
 }
 
-void ChatUserWid::updateLastMsg(std::vector<std::shared_ptr<TextChatData>> msgs) {
+void ChatUserWid::updateLastMsg(){
+    ui->user_chat_lb->setText(_chat_data->GetLastMsg());
+}
 
+void ChatUserWid::updateLastMsg(std::vector<std::shared_ptr<TextChatData>> msgs) {
     int last_msg_id = 0;
     QString last_msg = "";
     for (auto& msg : msgs) {

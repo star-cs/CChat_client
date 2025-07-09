@@ -30,6 +30,7 @@ void FriendInfoPage::SetInfo(std::shared_ptr<UserInfo> user_info)
     ui->name_lb->setText(user_info->_name);
     ui->nick_lb->setText(user_info->_nick);
     ui->bak_lb->setText(user_info->_nick);
+    ui->desc_lb->setText(user_info->_desc);
 }
 
 void FriendInfoPage::on_msg_chat_clicked()

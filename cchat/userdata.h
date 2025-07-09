@@ -58,9 +58,9 @@ struct ApplyInfo {
 class TextChatData;
 struct AuthInfo {
     AuthInfo(int uid, QString name,
-             QString nick, QString icon, int sex):
+             QString nick, QString icon, int sex, QString desc = ""):
         _uid(uid), _name(name), _nick(nick), _icon(icon),
-        _sex(sex), _thread_id(0){}
+        _sex(sex), _thread_id(0), _desc(desc){}
 
     void SetChatDatas(std::vector<std::shared_ptr<TextChatData>> _chat_datas);
     int _uid;
@@ -69,14 +69,15 @@ struct AuthInfo {
     QString _icon;
     int _sex;
     int _thread_id;
+    QString _desc;
     std::vector<std::shared_ptr<TextChatData>> _chat_datas;
 };
 
 struct AuthRsp {
     AuthRsp(int peer_uid, QString peer_name,
-            QString peer_nick, QString peer_icon, int peer_sex)
+            QString peer_nick, QString peer_icon, int peer_sex, QString desc = "")
         :_uid(peer_uid),_name(peer_name),_nick(peer_nick),
-          _icon(peer_icon),_sex(peer_sex),_thread_id(0)
+          _icon(peer_icon),_sex(peer_sex),_thread_id(0), _desc(desc)
     {
 
     }
@@ -89,6 +90,7 @@ struct AuthRsp {
     QString _icon;
     int _sex;
     int _thread_id;
+    QString _desc;
     std::vector<std::shared_ptr<TextChatData>> _chat_datas;
 };
 
@@ -98,17 +100,15 @@ struct UserInfo {
 
     UserInfo(std::shared_ptr<AuthInfo> auth):
         _uid(auth->_uid),_name(auth->_name),_nick(auth->_nick),
-        _icon(auth->_icon),_sex(auth->_sex),_desc(""){}
+        _icon(auth->_icon),_sex(auth->_sex),_desc(auth->_desc){}
 
-    UserInfo(int uid, QString name, QString icon):
-    _uid(uid), _name(name), _icon(icon),_nick(_name),
-    _sex(0),_desc(""){
-
-    }
+    UserInfo(int uid, QString name, QString icon, int sex, QString desc=""):
+        _uid(uid), _name(name), _icon(icon),_nick(_name),
+        _sex(0),_desc(desc){}
 
     UserInfo(std::shared_ptr<AuthRsp> auth):
         _uid(auth->_uid),_name(auth->_name),_nick(auth->_nick),
-        _icon(auth->_icon),_sex(auth->_sex),_desc(""){}
+        _icon(auth->_icon),_sex(auth->_sex),_desc(auth->_desc){}
 
     UserInfo(std::shared_ptr<SearchInfo> search_info):
         _uid(search_info->_uid),_name(search_info->_name),_nick(search_info->_nick),
@@ -127,9 +127,9 @@ struct UserInfo {
 class ChatDataBase {
 public:
     ChatDataBase(int msg_id, int thread_id, ChatFormType form_type, ChatMsgType msg_type,
-        QString content,int _send_uid);
+        QString content,int _send_uid, QString create_time = "");
     ChatDataBase(QString unique_id, int thread_id, ChatFormType form_type, ChatMsgType msg_type,
-        QString content, int send_uid);
+        QString content, int send_uid, QString create_time = "");
     int GetMsgId() { return _msg_id; }
     int GetThreadId() { return _thread_id; }
     ChatFormType GetFormType() { return _form_type; }
@@ -153,21 +153,22 @@ private:
     QString _content;
     //发送者id
     int _send_uid;
+    QString _create_time;
 };
 
 class TextChatData : public ChatDataBase {
 public:
 
     TextChatData(int msg_id, int thread_id, ChatFormType form_type, ChatMsgType msg_type,  QString content,
-        int send_uid):
-        ChatDataBase(msg_id, thread_id, form_type, msg_type, content, send_uid)
+        int send_uid, QString creat_time = ""):
+        ChatDataBase(msg_id, thread_id, form_type, msg_type, content, send_uid, creat_time)
     {
 
     }
 
     TextChatData(QString unique_id, int thread_id, ChatFormType form_type, ChatMsgType msg_type, QString content,
-        int send_uid):
-        ChatDataBase(unique_id, thread_id, form_type, msg_type, content, send_uid)
+        int send_uid, QString creat_time = ""):
+        ChatDataBase(unique_id, thread_id, form_type, msg_type, content, send_uid, creat_time)
     {
 
     }
@@ -186,22 +187,23 @@ struct ChatThreadInfo {
 class ChatThreadData {
 public:
     ChatThreadData(int other_id, int thread_id, int last_msg_id):
-        _other_id(other_id), _thread_id(thread_id), _last_msg_id(last_msg_id){}
+         _thread_id(thread_id), _other_id(other_id), _last_msg_id(last_msg_id){}
     void AddMsg(std::shared_ptr<ChatDataBase> msg);
     void SetLastMsgId(int msg_id);
+    int GetLastMsgId(){return _last_msg_id;}
     void SetOtherId(int other_id);
     int  GetOtherId();
     QString GetGroupName();
     QMap<int, std::shared_ptr<ChatDataBase>> GetMsgMap();
     int  GetThreadId();
     QMap<int, std::shared_ptr<ChatDataBase>>&  GetMsgMapRef();
-    void AppendMsg(int msg_id, std::shared_ptr<ChatDataBase> base_msg);
     QString GetLastMsg();
+
+    int _thread_id;    //会话id
 private:
     //如果是私聊，则为对方的id；如果是群聊，则为0
     int _other_id;
-    int _last_msg_id;
-    int _thread_id;
+    int _last_msg_id;  // 最近的一条消息编号
     QString _last_msg;
     //群聊信息,成员列表
     std::vector<int> _group_members;

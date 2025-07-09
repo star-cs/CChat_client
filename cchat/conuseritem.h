@@ -26,7 +26,8 @@ public:
     QSize sizeHint() const override;
     void SetInfo(std::shared_ptr<AuthInfo> auth_info);
     void SetInfo(std::shared_ptr<AuthRsp> auth_rsp);
-    void SetInfo(int uid, QString name, QString icon);
+    void SetInfo(std::shared_ptr<UserInfo> userInfo);
+    void SetInfo(int uid, QString name, QString icon); //非联系人item, 添加新朋友 / 联系人隔断
     void ShowRedPoint(bool show = false);
     std::shared_ptr<UserInfo> GetInfo();
 private:
